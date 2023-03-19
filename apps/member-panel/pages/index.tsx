@@ -1,4 +1,4 @@
-import styles from './index.module.css';
+import styles from "./index.module.css";
 
 export function Index() {
   /*
@@ -12,7 +12,7 @@ export function Index() {
         <div className="container">
           <div id="welcome">
             <h1>
-              <span> Hello there, </span>
+              <span>Hello there,</span>
               Welcome member-panel 👋
             </h1>
           </div>
@@ -289,8 +289,8 @@ export function Index() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {' '}
-                  What is Nx Cloud?{' '}
+                  {" "}
+                  What is Nx Cloud?{" "}
                 </a>
               </div>
               <a
