@@ -63,6 +63,15 @@
       "options": {
         "lintFilePatterns": ["apps/member-panel/**/*.{ts,tsx,js,jsx}"]
       }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --pretty --noEmit --project apps/member-panel/tsconfig.json",
+          "tsc --pretty --noEmit --project apps/member-panel/tsconfig.spec.json"
+        ]
+      }
     }
   },
   "tags": []
