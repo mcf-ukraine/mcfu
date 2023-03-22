@@ -1,11 +1,9 @@
+import { api } from "../utils/trpc";
 import styles from "./index.module.css";
 
 export function Index() {
-  /*
-   * Replace the elements below with your own.
-   *
-   * Note: The corresponding styles are in the ./index.css file.
-   */
+  const hello = api.example.hello.useQuery({ text: "it's me!" });
+
   return (
     <div className={styles.page}>
       <div className="wrapper">
@@ -14,6 +12,11 @@ export function Index() {
             <h1>
               <span>Hello there,</span>
               Welcome member-panel 👋
+            </h1>
+            <h1>
+              {hello.isFetching
+                ? "Loading..."
+                : "Response from tRPC: " + hello.data.greeting}
             </h1>
           </div>
 
