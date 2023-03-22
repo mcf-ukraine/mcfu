@@ -1,5 +1,6 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
+import { api } from "../utils/trpc";
 import "./styles.css";
 
 function CustomApp({ Component, pageProps }: AppProps) {
@@ -15,4 +16,4 @@ function CustomApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default CustomApp;
+export default api.withTRPC(CustomApp);
