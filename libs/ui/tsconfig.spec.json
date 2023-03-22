@@ -5,6 +5,7 @@
     "module": "commonjs",
     "types": ["jest", "node"]
   },
+  "files": ["../../node_modules/@nrwl/react/typings/cssmodule.d.ts"],
   "include": [
     "jest.config.ts",
     "src/**/*.test.ts",

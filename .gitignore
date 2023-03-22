@@ -41,3 +41,11 @@ tsconfig.tsbuildinfo
 
 # Next.js
 .next
+
+# Environment variables
+.env
+
+# SQLite
+*.db
+*.db-journal
+
