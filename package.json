@@ -3,11 +3,17 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "pnpx prisma generate"
   },
   "private": true,
+  "prisma": {
+    "schema": "libs/prisma/schema.prisma"
+  },
   "dependencies": {
+    "@babel/runtime": "7.21.0",
     "@nrwl/next": "15.9.0-beta.5",
+    "@prisma/client": "4.11.0",
     "@tanstack/react-query": "4.28.0",
     "@trpc/client": "10.16.0",
     "@trpc/next": "10.16.0",
@@ -41,7 +47,7 @@
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
     "@types/jest": "^29.4.0",
-    "@types/node": "18.14.2",
+    "@types/node": "18.15.5",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
     "@types/testing-library__jest-dom": "5.14.5",
@@ -68,6 +74,7 @@
     "nx": "15.9.0-beta.5",
     "postcss": "8.4.21",
     "prettier": "^2.6.2",
+    "prisma": "4.11.0",
     "react-test-renderer": "18.2.0",
     "tailwindcss": "3.2.7",
     "ts-jest": "^29.0.5",
