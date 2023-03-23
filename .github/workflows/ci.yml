@@ -32,10 +32,10 @@ jobs:
         run: pnpm install
 
       - name: Type Check
-        run: pnpx nx affected --target=type-check --parallel=3
+        run: pnpx nx run-many --target=type-check --parallel=3
 
       - name: Lint
-        run: pnpx nx affected --target=lint --parallel=3
+        run: pnpx nx run-many --target=lint --parallel=3
 
       - name: Test
-        run: pnpx nx affected --target=test --parallel=3 --configuration=ci
+        run: pnpx nx run-many --target=test --parallel=3 --configuration=ci
