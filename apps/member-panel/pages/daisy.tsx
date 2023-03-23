@@ -1,7 +1,5 @@
 import { Ui } from "@mcfu/ui";
 
-const Daisy = () => {
-  return <Ui />;
-};
+const Daisy = () => <Ui />;
 
 export default Daisy;

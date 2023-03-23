@@ -1,5 +1,5 @@
-import { api } from "../utils/trpc";
 import styles from "./index.module.css";
+import { api } from "../utils/trpc";
 
 export function Index() {
   const hello = api.example.hello.useQuery({ text: "it's me!" });

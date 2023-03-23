@@ -1,8 +1,8 @@
-import { PropsWithChildren } from "react";
-import { createTRPCReact, httpBatchLink } from "@trpc/react-query";
+import { type PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createTRPCReact, httpBatchLink } from "@trpc/react-query";
 import SuperJSON from "superjson";
-import { AppRouter } from "@mcfu/trpc-server";
+import { type AppRouter } from "@mcfu/trpc-server";
 
 const trpcReact = createTRPCReact<AppRouter>();
 const url = `http://localhost:${process.env.PORT ?? 3000}/api/trpc`;

@@ -2,7 +2,7 @@ const { createGlobPatternsForDependencies } = require("@nrwl/react/tailwind");
 const { join } = require("path");
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+const config = {
   content: [
     join(
       __dirname,
@@ -15,3 +15,5 @@ module.exports = {
   },
   plugins: [require("daisyui")],
 };
+
+module.exports = config;

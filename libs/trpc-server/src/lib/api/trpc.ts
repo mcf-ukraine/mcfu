@@ -14,10 +14,10 @@
  *
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
+import { initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-// import { type Session } from "next-auth";
-
-// import { getServerAuthSession } from "@/server/auth";
+import superjson from "superjson";
+import { ZodError } from "zod";
 import { prisma } from "../db";
 
 // type CreateContextOptions = {
@@ -34,12 +34,10 @@ import { prisma } from "../db";
  *
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
-const createInnerTRPCContext = (/* opts: CreateContextOptions */) => {
-  return {
-    // session: opts.session,
-    prisma,
-  };
-};
+const createInnerTRPCContext = (/* opts: CreateContextOptions */) => ({
+  // session: opts.session,
+  prisma,
+});
 
 /**
  * This is the actual context you will use in your router. It will be used to process every request
@@ -65,10 +63,6 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-import { initTRPC, TRPCError } from "@trpc/server";
-import superjson from "superjson";
-import { ZodError } from "zod";
-
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
@@ -107,17 +101,17 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
-const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+const enforceUserIsAuthed = t.middleware(({ ctx, next }) =>
   // if (!ctx.session || !ctx.session.user) {
   //   throw new TRPCError({ code: "UNAUTHORIZED" });
   // }
-  return next({
+  next({
     ctx: {
       // infers the `session` as non-nullable
       // session: { ...ctx.session, user: ctx.session.user },
     },
-  });
-});
+  })
+);
 
 /**
  * Protected (authenticated) procedure
