@@ -1,10 +1,10 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nrwl/nx"],
+  "plugins": ["@nrwl/nx", "eslint-plugin-import"],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.cjs", "*.mjs"],
       "rules": {
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
@@ -17,6 +17,46 @@
                 "onlyDependOnLibsWithTags": ["*"]
               }
             ]
+          }
+        ],
+        "@typescript-eslint/consistent-type-imports": [
+          "warn",
+          {
+            "prefer": "type-imports",
+            "fixStyle": "inline-type-imports"
+          }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          { "argsIgnorePattern": "^_" }
+        ],
+        "arrow-body-style": ["error", "as-needed"],
+        "import/order": [
+          "error",
+          {
+            "pathGroups": [
+              {
+                "pattern": "react",
+                "group": "builtin",
+                "position": "before"
+              },
+              {
+                "pattern": "@mcfu/**",
+                "group": "internal"
+              }
+            ],
+            "groups": [
+              ["external", "builtin"],
+              "internal",
+              ["sibling", "parent"],
+              "index"
+            ],
+            "pathGroupsExcludedImportTypes": ["react"],
+            "newlines-between": "never",
+            "alphabetize": {
+              "order": "asc",
+              "caseInsensitive": true
+            }
           }
         ]
       }
