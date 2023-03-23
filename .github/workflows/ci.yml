@@ -9,13 +9,28 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: nrwl/nx-set-shas@v3
-      - run: pnpm ci
 
-      - run: pnpx nx format:check
-      - run: pnpx nx affected --target=lint --parallel=3
-      - run: pnpx nx affected --target=test --parallel=3 --configuration=ci
-      - run: pnpx nx affected --target=build --parallel=3
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+          cache: "pnpm"
+
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v3
+
+      - name: Install Dependencies
+        run: pnpm ci
+
+      - name: Type Check
+        run: pnpx nx affected --target=type-check --parallel=3
+
+      - name: Lint
+        run: pnpx nx affected --target=lint --parallel=3
+
+      - name: Test
+        run: pnpx nx affected --target=test --parallel=3 --configuration=ci
