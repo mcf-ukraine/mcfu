@@ -10,6 +10,7 @@
   "prisma": {
     "schema": "libs/prisma/schema.prisma"
   },
+  "packageManager": "pnpm@7.30.0",
   "dependencies": {
     "@babel/runtime": "7.21.0",
     "@nrwl/next": "15.9.0-beta.5",
