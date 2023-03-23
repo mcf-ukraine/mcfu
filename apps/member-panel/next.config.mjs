@@ -1,7 +1,6 @@
 // @ts-check
 !process.env.SKIP_ENV_VALIDATION && (await import("./env.mjs"));
-
-import { withNx } from "@nrwl/next/plugins/with-nx";
+import { withNx } from "@nrwl/next/plugins/with-nx.js";
 
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
