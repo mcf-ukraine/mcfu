@@ -18,38 +18,19 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 18.x
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 7
-          run_install: false
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          cache: "npm"
 
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v3
 
       - name: Install Dependencies
-        run: pnpm install
+        run: npm ci
 
       - name: Type Check
-        run: pnpx nx affected --target=type-check --parallel=3
+        run: npx nx affected --target=type-check --parallel=3
 
       - name: Lint
-        run: pnpx nx affected --target=lint --parallel=3
+        run: npx nx affected --target=lint --parallel=3
 
       - name: Test
-        run: pnpx nx affected --target=test --parallel=3 --configuration=ci
+        run: npx nx affected --target=test --parallel=3 --configuration=ci

@@ -9,7 +9,7 @@
       "options": {
         "commands": [
           {
-            "command": "pnpx prisma studio"
+            "command": "npx prisma studio"
           }
         ],
         "cwd": "libs/prisma"

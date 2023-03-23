@@ -1,7 +1,0 @@
-{
-  "name": "member-panel",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build"
-  }
-}
