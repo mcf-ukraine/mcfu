@@ -5,6 +5,6 @@ describe("Index", () => {
   it("should render successfully", () => {
     render(<Index />);
 
-    expect(screen.getByText("Hello there,")).toBeInTheDocument();
+    expect(screen.getByText("Hello friends,")).toBeInTheDocument();
   });
 });
