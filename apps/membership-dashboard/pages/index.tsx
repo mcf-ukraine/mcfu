@@ -4,7 +4,7 @@ const Index = () => (
       <div className="container">
         <div id="welcome">
           <h1>
-            <span>Hello there,</span>
+            <span>Hello friends,</span>
             Welcome membership-dashboard 👋
           </h1>
         </div>
