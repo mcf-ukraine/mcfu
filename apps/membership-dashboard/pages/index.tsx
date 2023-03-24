@@ -4,8 +4,8 @@ const Index = () => (
       <div className="container">
         <div id="welcome">
           <h1>
-            <span>Hello friends,</span>
-            Welcome membership-dashboard 👋
+            <span>Hello,</span>
+            Welcome membership-dashboard! 👋
           </h1>
         </div>
 

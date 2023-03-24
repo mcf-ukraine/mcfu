@@ -7,6 +7,6 @@ describe("Index", () => {
   it("should render successfully", () => {
     render(<Index />, { wrapper: withTestTRPC });
 
-    expect(screen.getByText("Hello friends,")).toBeInTheDocument();
+    expect(screen.getByText("Hello,")).toBeInTheDocument();
   });
 });
