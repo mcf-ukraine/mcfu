@@ -10,7 +10,7 @@ export function Index() {
           <div id="welcome">
             <h1>
               <span>Hello,</span>
-              Welcome member-panel 👋
+              Welcome member-panel! 👋
             </h1>
             <h1>
               {hello.isFetching
