@@ -40,7 +40,7 @@
     "@nrwl/storybook": "15.9.0-rc.2",
     "@nrwl/workspace": "15.9.0-rc.2",
     "@storybook/addon-essentials": "^7.0.0-rc.10",
-    "@storybook/core-common": "^7.0.0-rc.10",
+    "@storybook/core-common": "^7.0.0",
     "@storybook/core-server": "^7.0.0-rc.10",
     "@storybook/react": "^7.0.0-rc.10",
     "@storybook/react-vite": "^7.0.0-rc.10",
