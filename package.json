@@ -2,6 +2,9 @@
   "name": "mcfu",
   "version": "0.0.1",
   "license": "MIT",
+  "engines": {
+    "node": "18.15.0"
+  },
   "scripts": {
     "prepare": "husky install",
     "postinstall": "npx prisma generate"
