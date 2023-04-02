@@ -13,10 +13,7 @@ const config = {
   theme: {
     extend: {},
   },
-  plugins: [require("daisyui")],
-  daisyui: {
-    themes: ["light"],
-  },
+  plugins: [],
 };
 
 module.exports = config;
