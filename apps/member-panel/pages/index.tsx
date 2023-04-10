@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { Button } from "@mcfu/ui";
 import { LogoAndTitle } from "../components/LogoAndTitle/LogoAndTitle";
+import { ua } from "../locales/ua";
 import { serverSidePropsWithUser } from "../utils/serverSidePropsWithUser";
 
 export const getServerSideProps: GetServerSideProps = serverSidePropsWithUser;
@@ -14,7 +15,7 @@ const Index = () => {
   return (
     <>
       <Head>
-        <title>Кабінет ФАіСУ</title>
+        <title>{ua.pages.home.titleTag}</title>
       </Head>
       <div className="flex min-h-screen flex-col items-center justify-center dark:text-white">
         <LogoAndTitle />

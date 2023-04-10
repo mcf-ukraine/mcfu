@@ -5,10 +5,13 @@ import { type OAuthStrategy } from "@clerk/nextjs/dist/api";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import { Spinner } from "@mcfu/ui";
 import { ua } from "../../locales/ua";
+import { getBaseUrl } from "../../utils/getBaseUrl";
 import { LoginFacebookButton } from "../LoginFacebookButton/LoginFacebookButton";
 import { LoginGoogleButton } from "../LoginGoogleButton/LoginGoogleButton";
 
-export const LoginForm = ({ baseUrl }: { baseUrl: string }) => {
+const BASE_URL = getBaseUrl();
+
+export const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [expired, setExpired] = useState(false);
   const [verified, setVerified] = useState(false);
@@ -56,7 +59,7 @@ export const LoginForm = ({ baseUrl }: { baseUrl: string }) => {
 
       startMagicLinkFlow({
         emailAddressId: emailAddressId,
-        redirectUrl: `${baseUrl}/verify-email`,
+        redirectUrl: `${BASE_URL}/verify-email`,
       });
 
       const verification = signIn.firstFactorVerification;
@@ -81,18 +84,34 @@ export const LoginForm = ({ baseUrl }: { baseUrl: string }) => {
           <div>
             <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div>
+                <LoginGoogleButton
+                  onClick={() => {
+                    signInWith("oauth_google");
+                  }}
+                />
+              </div>
+              <div>
                 <LoginFacebookButton
                   onClick={() => {
                     signInWith("oauth_facebook");
                   }}
                 />
               </div>
-              <div>
-                <LoginGoogleButton
-                  onClick={() => {
-                    signInWith("oauth_google");
-                  }}
+            </div>
+          </div>
+
+          <div className="mt-4 rounded-md bg-blue-50 p-4 dark:bg-slate-700">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <InformationCircleIcon
+                  className="h-5 w-5 text-blue-400 dark:text-sky-500"
+                  aria-hidden="true"
                 />
+              </div>
+              <div className="ml-3 flex-1 md:flex md:justify-between">
+                <p className="text-sm text-sky-700 dark:text-gray-300">
+                  {ua.pages.login.form.content.socialLoginInfo}
+                </p>
               </div>
             </div>
           </div>
