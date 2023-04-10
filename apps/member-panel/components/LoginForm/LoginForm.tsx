@@ -4,8 +4,8 @@ import { useSignIn } from "@clerk/nextjs";
 import { type OAuthStrategy } from "@clerk/nextjs/dist/api";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import { Spinner } from "@mcfu/ui";
-import { env } from "../../env.mjs";
 import { ua } from "../../locales/ua";
+import { BASE_URL } from "../../utils/getBaseUrl";
 import { LoginFacebookButton } from "../LoginFacebookButton/LoginFacebookButton";
 import { LoginGoogleButton } from "../LoginGoogleButton/LoginGoogleButton";
 
@@ -57,7 +57,7 @@ export const LoginForm = () => {
 
       startMagicLinkFlow({
         emailAddressId: emailAddressId,
-        redirectUrl: `${env.NEXT_PUBLIC_VERCEL_URL}/verify-email`,
+        redirectUrl: `${BASE_URL}/verify-email`,
       });
 
       const verification = signIn.firstFactorVerification;
