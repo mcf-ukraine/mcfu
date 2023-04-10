@@ -1,5 +1,6 @@
 const { createGlobPatternsForDependencies } = require("@nrwl/react/tailwind");
 const { join } = require("path");
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -10,10 +11,15 @@ const config = {
     ),
     ...createGlobPatternsForDependencies(__dirname),
   ],
+  darkMode: "class",
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)", ...defaultTheme.fontFamily.sans],
+      },
+    },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };
 
 module.exports = config;
