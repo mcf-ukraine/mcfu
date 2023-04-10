@@ -9,6 +9,8 @@ import logo from "../public/logo-transparent.png";
 import { getBaseUrl } from "../utils/getBaseUrl";
 import { withHomeRedirect } from "../utils/withHomeRedirect";
 
+const BASE_URL = getBaseUrl();
+
 export const getServerSideProps = withHomeRedirect;
 
 const VerifyEmail = () => {
@@ -18,8 +20,6 @@ const VerifyEmail = () => {
   useEffect(() => {
     async function verify() {
       try {
-        const BASE_URL = getBaseUrl();
-
         await handleMagicLinkVerification({
           redirectUrl: `${BASE_URL}/login`,
           redirectUrlComplete: BASE_URL,

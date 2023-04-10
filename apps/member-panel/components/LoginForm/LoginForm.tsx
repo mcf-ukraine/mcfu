@@ -9,6 +9,8 @@ import { getBaseUrl } from "../../utils/getBaseUrl";
 import { LoginFacebookButton } from "../LoginFacebookButton/LoginFacebookButton";
 import { LoginGoogleButton } from "../LoginGoogleButton/LoginGoogleButton";
 
+const BASE_URL = getBaseUrl();
+
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [expired, setExpired] = useState(false);
@@ -40,8 +42,6 @@ export const LoginForm = () => {
     setVerified(false);
 
     if (isLoaded) {
-      const BASE_URL = getBaseUrl();
-
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
