@@ -5,7 +5,7 @@ import { type OAuthStrategy } from "@clerk/nextjs/dist/api";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import { Spinner } from "@mcfu/ui";
 import { ua } from "../../locales/ua";
-import { BASE_URL } from "../../utils/getBaseUrl";
+import { getBaseUrl } from "../../utils/getBaseUrl";
 import { LoginFacebookButton } from "../LoginFacebookButton/LoginFacebookButton";
 import { LoginGoogleButton } from "../LoginGoogleButton/LoginGoogleButton";
 
@@ -40,6 +40,8 @@ export const LoginForm = () => {
     setVerified(false);
 
     if (isLoaded) {
+      const BASE_URL = getBaseUrl();
+
       setLoading(true);
       setTimeout(() => {
         setLoading(false);

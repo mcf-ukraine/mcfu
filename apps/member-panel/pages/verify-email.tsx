@@ -6,7 +6,7 @@ import { MagicLinkErrorCode, isMagicLinkError, useClerk } from "@clerk/nextjs";
 import { Spinner } from "@mcfu/ui";
 import { ua } from "../locales/ua";
 import logo from "../public/logo-transparent.png";
-import { BASE_URL } from "../utils/getBaseUrl";
+import { getBaseUrl } from "../utils/getBaseUrl";
 import { withHomeRedirect } from "../utils/withHomeRedirect";
 
 export const getServerSideProps = withHomeRedirect;
@@ -18,6 +18,8 @@ const VerifyEmail = () => {
   useEffect(() => {
     async function verify() {
       try {
+        const BASE_URL = getBaseUrl();
+
         await handleMagicLinkVerification({
           redirectUrl: `${BASE_URL}/login`,
           redirectUrlComplete: BASE_URL,
