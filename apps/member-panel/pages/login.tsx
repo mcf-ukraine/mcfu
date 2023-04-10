@@ -1,7 +1,10 @@
 import Head from "next/head";
 import { LoginForm } from "../components";
 import { LogoAndTitle } from "../components/LogoAndTitle/LogoAndTitle";
+import { getBaseUrl } from "../utils/getBaseUrl";
 import { withHomeRedirect } from "../utils/withHomeRedirect";
+
+const BASE_URL = getBaseUrl();
 
 export const getServerSideProps = withHomeRedirect;
 
@@ -14,7 +17,7 @@ export const Login = () => (
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <LogoAndTitle />
       </div>
-      <LoginForm />
+      <LoginForm baseUrl={BASE_URL} />
     </div>
   </>
 );

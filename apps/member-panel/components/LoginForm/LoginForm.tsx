@@ -5,13 +5,10 @@ import { type OAuthStrategy } from "@clerk/nextjs/dist/api";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import { Spinner } from "@mcfu/ui";
 import { ua } from "../../locales/ua";
-import { getBaseUrl } from "../../utils/getBaseUrl";
 import { LoginFacebookButton } from "../LoginFacebookButton/LoginFacebookButton";
 import { LoginGoogleButton } from "../LoginGoogleButton/LoginGoogleButton";
 
-const BASE_URL = getBaseUrl();
-
-export const LoginForm = () => {
+export const LoginForm = ({ baseUrl }: { baseUrl: string }) => {
   const [email, setEmail] = useState("");
   const [expired, setExpired] = useState(false);
   const [verified, setVerified] = useState(false);
@@ -59,7 +56,7 @@ export const LoginForm = () => {
 
       startMagicLinkFlow({
         emailAddressId: emailAddressId,
-        redirectUrl: `${BASE_URL}/verify-email`,
+        redirectUrl: `${baseUrl}/verify-email`,
       });
 
       const verification = signIn.firstFactorVerification;
