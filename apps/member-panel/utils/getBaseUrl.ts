@@ -5,5 +5,5 @@ export const getBaseUrl = () => {
     return `http://${env.NEXT_PUBLIC_VERCEL_URL}`;
   }
 
-  return `https://${env.NEXT_PUBLIC_VERCEL_URL}`;
+  return `https://${env.NEXT_PUBLIC_SITE_URL}`;
 };

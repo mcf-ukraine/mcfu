@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { ToggleColorModeButton } from "@mcfu/ui";
 import { ua } from "../../locales/ua";
-import logo from "../../public/logo-transparent.png";
 
 export const LogoAndTitle = () => (
   <>
@@ -9,7 +8,7 @@ export const LogoAndTitle = () => (
       className="mx-auto h-24 w-auto"
       width={96}
       height={96}
-      src={logo}
+      src="/logo-transparent.png"
       alt={ua.common.logoAlt}
     />
     <h2 className="mt-6 flex items-center justify-center text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-white">

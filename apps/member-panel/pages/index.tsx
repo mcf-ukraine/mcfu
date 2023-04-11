@@ -12,6 +12,10 @@ const Index = () => {
   const { user } = useUser();
   const { signOut } = useClerk();
 
+  const handleClick = () => {
+    signOut();
+  };
+
   return (
     <>
       <Head>
@@ -27,13 +31,7 @@ const Index = () => {
               <strong>{user.emailAddresses[0].emailAddress}</strong>
             </div>
             <div className="mt-3 text-center">
-              <Button
-                onClick={async () => {
-                  await signOut();
-                }}
-              >
-                Вихід
-              </Button>
+              <Button onClick={handleClick}>Вихід</Button>
             </div>
           </div>
         )}

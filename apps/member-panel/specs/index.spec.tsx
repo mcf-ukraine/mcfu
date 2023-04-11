@@ -1,12 +1,37 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import Index from "../pages/index";
-import { withTestTRPC } from "../testUtils/withTestTRPC";
 
-describe("Index", () => {
-  it.skip("should render successfully", () => {
-    render(<Index />, { wrapper: withTestTRPC });
+const mockSignOut = jest.fn();
 
-    expect(screen.getByText("Hello,")).toBeInTheDocument();
+jest.mock("@clerk/nextjs", () => ({
+  useUser: () => ({
+    user: {
+      emailAddresses: [{ emailAddress: "test@test.com" }],
+    },
+    isLoading: false,
+  }),
+  useClerk: () => ({
+    signOut: mockSignOut,
+  }),
+}));
+
+describe("Home page", () => {
+  it("should render successfully", () => {
+    render(<Index />);
+
+    expect(screen.getByText("Кабінет члена ФАіСУ")).toBeInTheDocument();
+  });
+
+  it("should render user email", () => {
+    render(<Index />);
+    expect(screen.getByText("test@test.com")).toBeInTheDocument();
+  });
+
+  it("should call signOut when button is clicked", () => {
+    render(<Index />);
+    screen.getByText("Вихід").click();
+
+    expect(mockSignOut).toHaveBeenCalledTimes(1);
   });
 });
