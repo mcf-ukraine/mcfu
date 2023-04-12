@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
+import { vi } from "vitest";
 import Login from "../pages/login";
 
-jest.mock("@clerk/nextjs", () => ({
+vi.mock("@clerk/nextjs", () => ({
   useSignIn: () => ({
-    signIn: jest.fn(),
+    signIn: vi.fn(),
   }),
 }));
 

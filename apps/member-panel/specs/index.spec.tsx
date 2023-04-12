@@ -1,10 +1,9 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
+import { vi } from "vitest";
 import Index from "../pages/index";
 
-const mockSignOut = jest.fn();
-
-jest.mock("@clerk/nextjs", () => ({
+const mockSignOut = vi.fn();
+vi.mock("@clerk/nextjs", () => ({
   useUser: () => ({
     user: {
       emailAddresses: [{ emailAddress: "test@test.com" }],

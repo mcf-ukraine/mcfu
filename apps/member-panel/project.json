@@ -44,10 +44,9 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nrwl/vite:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/member-panel/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
