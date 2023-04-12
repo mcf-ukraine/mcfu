@@ -4,12 +4,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MagicLinkErrorCode, isMagicLinkError, useClerk } from "@clerk/nextjs";
 import { Spinner } from "@mcfu/ui";
+import { env } from "../env.mjs";
 import { ua } from "../locales/ua";
 import logo from "../public/logo-transparent.png";
-import { getBaseUrl } from "../utils/getBaseUrl";
 import { withHomeRedirect } from "../utils/withHomeRedirect";
-
-const BASE_URL = getBaseUrl();
 
 export const getServerSideProps = withHomeRedirect;
 
@@ -21,8 +19,8 @@ const VerifyEmail = () => {
     async function verify() {
       try {
         await handleMagicLinkVerification({
-          redirectUrl: `${BASE_URL}/login`,
-          redirectUrlComplete: BASE_URL,
+          redirectUrl: `${env.NEXT_PUBLIC_SITE_URL}/login`,
+          redirectUrlComplete: env.NEXT_PUBLIC_SITE_URL,
         });
         // If we're not redirected at this point, it means
         // that the flow has completed on another device.
