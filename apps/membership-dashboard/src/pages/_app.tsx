@@ -13,4 +13,6 @@ const CustomApp = ({ Component, pageProps }: AppProps) => (
   </>
 );
 
+// Axiom Web Vitals reporting
+export { reportWebVitals } from "next-axiom";
 export default CustomApp;

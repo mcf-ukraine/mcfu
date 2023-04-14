@@ -12,7 +12,7 @@
       "rules": {
         "@next/next/no-html-link-for-pages": [
           "error",
-          "apps/member-panel/pages"
+          "apps/member-panel/src/pages"
         ]
       }
     },

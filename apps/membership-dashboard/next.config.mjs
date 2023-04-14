@@ -1,6 +1,7 @@
 // @ts-check
-!process.env.SKIP_ENV_VALIDATION && (await import("./env.mjs"));
+!process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
 import { withNx } from "@nrwl/next/plugins/with-nx.js";
+import { withAxiom } from "next-axiom";
 
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
@@ -14,4 +15,4 @@ const nextConfig = {
   },
 };
 
-export default withNx(nextConfig);
+export default withNx(withAxiom(nextConfig));
