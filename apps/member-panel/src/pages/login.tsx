@@ -1,11 +1,8 @@
 import Head from "next/head";
-import { log } from "next-axiom";
 import { LoginForm } from "../components";
 import { LogoAndTitle } from "../components/LogoAndTitle/LogoAndTitle";
 import { ua } from "../locales/ua";
 import { withHomeRedirect } from "../utils/withHomeRedirect";
-
-log.info("Login page");
 
 export const getServerSideProps = withHomeRedirect;
 

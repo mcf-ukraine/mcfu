@@ -3,6 +3,7 @@ import { type FormEvent, useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { type OAuthStrategy } from "@clerk/nextjs/dist/api";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
+import { log } from "next-axiom";
 import { Spinner } from "@mcfu/ui";
 import { env } from "../../env.mjs";
 import { ua } from "../../locales/ua";
@@ -40,6 +41,7 @@ export const LoginForm = () => {
     setVerified(false);
 
     if (isLoaded) {
+      log.info("Login page - Frontend");
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
