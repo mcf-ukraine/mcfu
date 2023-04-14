@@ -6,7 +6,6 @@ import { MagicLinkErrorCode, isMagicLinkError, useClerk } from "@clerk/nextjs";
 import { Spinner } from "@mcfu/ui";
 import { env } from "../env.mjs";
 import { ua } from "../locales/ua";
-import logo from "../public/logo-transparent.png";
 import { withHomeRedirect } from "../utils/withHomeRedirect";
 
 export const getServerSideProps = withHomeRedirect;
@@ -48,7 +47,7 @@ const VerifyEmail = () => {
           className="mx-auto h-24 w-auto"
           width={96}
           height={96}
-          src={logo}
+          src="/logo-transparent.png"
           alt={ua.common.logoAlt}
         />
         {verificationStatus === "loading" ? (
