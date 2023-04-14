@@ -6,7 +6,7 @@ import { withHomeRedirect } from "../utils/withHomeRedirect";
 
 export const getServerSideProps = withHomeRedirect;
 
-export const Login = () => (
+const Login = () => (
   <>
     <Head>
       <title>{ua.pages.login.meta.title}</title>
