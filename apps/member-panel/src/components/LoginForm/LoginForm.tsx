@@ -41,7 +41,7 @@ export const LoginForm = () => {
     setVerified(false);
 
     if (isLoaded) {
-      log.info("Login page - Frontend");
+      log.debug("Login page - Frontend");
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
