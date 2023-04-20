@@ -1,10 +1,14 @@
 import { type AppProps } from "next/app";
 import Head from "next/head";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { api } from "../utils/trpc";
 import "../styles/styles.css";
+
+// Axiom Web Vitals reporting
+export { reportWebVitals } from "next-axiom";
 
 const inter = Inter({
   subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
@@ -40,9 +44,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => (
         </main>
       </ThemeProvider>
     </ClerkProvider>
+    <Analytics />
   </>
 );
 
-// Axiom Web Vitals reporting
-export { reportWebVitals } from "next-axiom";
 export default api.withTRPC(CustomApp);

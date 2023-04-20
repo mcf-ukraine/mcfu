@@ -44,6 +44,13 @@ export const ua = {
           loginLinkExpired:
             "Посилання для входу застаріло, будь-ласка, спробуйте ще раз.",
         },
+
+        errors: {
+          emailNotFound: {
+            title: "Помилка при вході!",
+            message: "Будь-ласка, перевірте правильність введення email.",
+          },
+        },
       },
     },
     register: {

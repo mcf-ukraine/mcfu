@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { Toaster } from "@mcfu/ui";
 import { LoginForm } from "../components";
 import { LogoAndTitle } from "../components/LogoAndTitle/LogoAndTitle";
 import { ua } from "../locales/ua";
@@ -16,12 +17,13 @@ const Login = () => (
         key="desc"
       />
     </Head>
-    <div className="flex min-h-full flex-col justify-center px-4 py-20 sm:px-6 lg:px-8">
+    <div className="flex min-h-full flex-col justify-center px-4 pb-20 pt-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <LogoAndTitle />
       </div>
       <LoginForm />
     </div>
+    <Toaster />
   </>
 );
 
