@@ -1,6 +1,7 @@
 import { type AppProps } from "next/app";
 import Head from "next/head";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { api } from "../utils/trpc";
@@ -43,6 +44,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => (
         </main>
       </ThemeProvider>
     </ClerkProvider>
+    <Analytics />
   </>
 );
 
