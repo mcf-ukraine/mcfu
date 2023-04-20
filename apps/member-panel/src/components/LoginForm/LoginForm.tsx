@@ -2,11 +2,13 @@ import { useRouter } from "next/router";
 import { type FormEvent, useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { type OAuthStrategy } from "@clerk/nextjs/dist/api";
+import { type SignInResource } from "@clerk/types/dist/signIn";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import { log } from "next-axiom";
-import { Spinner } from "@mcfu/ui";
+import { Spinner, toast } from "@mcfu/ui";
 import { env } from "../../env.mjs";
 import { ua } from "../../locales/ua";
+import { isSignInError } from "../../utils/clerk";
 import { LoginFacebookButton } from "../LoginFacebookButton/LoginFacebookButton";
 import { LoginGoogleButton } from "../LoginGoogleButton/LoginGoogleButton";
 
@@ -41,16 +43,35 @@ export const LoginForm = () => {
     setVerified(false);
 
     if (isLoaded) {
-      log.debug("Login page - Frontend");
       setLoading(true);
-      setTimeout(() => {
+
+      const { startMagicLinkFlow, cancelMagicLinkFlow } =
+        signIn.createMagicLinkFlow();
+
+      let si: SignInResource;
+
+      try {
+        si = await signIn.create({ identifier: email });
         setLoading(false);
         setVerifying(true);
-      }, 1000);
+      } catch (e) {
+        if (isSignInError(e)) {
+          log.error(JSON.stringify(e.errors[0]));
+          if (e.errors[0].code === "form_identifier_not_found") {
+            toast.error({
+              title: ua.pages.login.form.errors.emailNotFound.title,
+              message: ua.pages.login.form.errors.emailNotFound.message,
+            });
+          }
+        } else {
+          log.error(e);
+        }
+        setLoading(false);
+        setVerifying(false);
+        cancelMagicLinkFlow();
+        return;
+      }
 
-      const { startMagicLinkFlow } = signIn.createMagicLinkFlow();
-
-      const si = await signIn.create({ identifier: email });
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const { emailAddressId } = si.supportedFirstFactors.find(
@@ -157,13 +178,18 @@ export const LoginForm = () => {
           <div>
             <button
               type="submit"
-              className="text-md flex w-full justify-center rounded-md bg-sky-600 px-3 py-2 font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
+              className="text-md relative flex w-full justify-center rounded-md bg-sky-600 px-3 py-2 font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
             >
               {ua.pages.login.form.submit}
+              {loading && (
+                <Spinner
+                  className="absolute left-[50%] top-[50%] ml-8 mt-[-11px]"
+                  size={5}
+                  darkColor="text-gray-200"
+                />
+              )}
             </button>
           </div>
-
-          {loading && <Spinner screenReaderText={ua.common.loading} />}
 
           {verifying && (
             <div className="rounded-md bg-blue-50 p-4 dark:bg-sky-900">

@@ -6,6 +6,9 @@ import { ThemeProvider } from "next-themes";
 import { api } from "../utils/trpc";
 import "../styles/styles.css";
 
+// Axiom Web Vitals reporting
+export { reportWebVitals } from "next-axiom";
+
 const inter = Inter({
   subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
   variable: "--font-inter",
@@ -43,6 +46,4 @@ const CustomApp = ({ Component, pageProps }: AppProps) => (
   </>
 );
 
-// Axiom Web Vitals reporting
-export { reportWebVitals } from "next-axiom";
 export default api.withTRPC(CustomApp);
