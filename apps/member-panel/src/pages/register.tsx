@@ -3,6 +3,7 @@ import { ua } from "../locales/ua";
 import { withHomeRedirect } from "../utils/withHomeRedirect";
 
 export const getServerSideProps = withHomeRedirect;
+export const runtime = "experimental-edge";
 
 const Register = () => (
   <>

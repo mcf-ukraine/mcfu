@@ -7,6 +7,7 @@ import { ua } from "../locales/ua";
 import { serverSidePropsWithUser } from "../utils/serverSidePropsWithUser";
 
 export const getServerSideProps: GetServerSideProps = serverSidePropsWithUser;
+export const runtime = "experimental-edge";
 
 const Index = () => {
   const { user } = useUser();
