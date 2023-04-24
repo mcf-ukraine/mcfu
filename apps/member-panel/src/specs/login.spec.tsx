@@ -17,7 +17,7 @@ describe("Login", () => {
     expect(screen.getByText("Увійти з Facebook")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Вхід через акаунти соціальних мереж - швидкий та безпечний спосіб входу в систему."
+        "Акаунти соціальних мереж - швидкий та безпечний спосіб входу в систему."
       )
     ).toBeInTheDocument();
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
