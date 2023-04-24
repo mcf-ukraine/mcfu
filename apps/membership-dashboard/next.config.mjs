@@ -13,6 +13,9 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  experimental: {
+    runtime: "experimental-edge",
+  },
 };
 
 export default withNx(withAxiom(nextConfig));

@@ -1,3 +1,5 @@
+export const runtime = "experimental-edge";
+
 const Index = () => (
   <div>
     <div className="wrapper">
