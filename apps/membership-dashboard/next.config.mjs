@@ -1,10 +1,10 @@
 // @ts-check
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
-import { withNx } from "@nrwl/next/plugins/with-nx.js";
+import { withNx } from "@nx/next/plugins/with-nx.js";
 import { withAxiom } from "next-axiom";
 
 /**
- * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
+ * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
   reactStrictMode: true,
@@ -12,6 +12,9 @@ const nextConfig = {
     // Set this to true if you would like to use SVGR
     // See: https://github.com/gregberge/svgr
     svgr: false,
+  },
+  experimental: {
+    serverActions: false,
   },
 };
 
