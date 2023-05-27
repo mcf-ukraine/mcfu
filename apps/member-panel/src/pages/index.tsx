@@ -5,6 +5,7 @@ import { Button } from "@mcfu/ui";
 import { LogoAndTitle } from "../components/LogoAndTitle/LogoAndTitle";
 import { ua } from "../locales/ua";
 import { serverSidePropsWithUser } from "../utils/serverSidePropsWithUser";
+import { api } from "../utils/trpc";
 
 export const getServerSideProps: GetServerSideProps = serverSidePropsWithUser;
 
@@ -15,6 +16,9 @@ const Index = () => {
   const handleClick = () => {
     signOut();
   };
+
+  const me = api.user.me.useQuery();
+  console.log(me);
 
   return (
     <>

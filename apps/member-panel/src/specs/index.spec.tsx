@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
+import { withTestTRPC } from "@mcfu/test-utils";
 import Index from "../pages/index";
 
 const mockSignOut = vi.fn();
@@ -15,20 +16,25 @@ vi.mock("@clerk/nextjs", () => ({
   }),
 }));
 
+const renderComponent = () => {
+  render(withTestTRPC({ children: <Index /> }));
+};
+
 describe("Home page", () => {
   it("should render successfully", () => {
-    render(<Index />);
+    renderComponent();
 
     expect(screen.getByText("Кабінет члена ФАіСУ")).toBeInTheDocument();
   });
 
   it("should render user email", () => {
-    render(<Index />);
+    renderComponent();
+
     expect(screen.getByText("test@test.com")).toBeInTheDocument();
   });
 
   it("should call signOut when button is clicked", () => {
-    render(<Index />);
+    renderComponent();
     screen.getByText("Вихід").click();
 
     expect(mockSignOut).toHaveBeenCalledTimes(1);
