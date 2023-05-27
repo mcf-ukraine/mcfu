@@ -14,13 +14,60 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id                     Int                  @id @default(autoincrement())
+  clerkId                String               @unique
+  email                  String               @unique
+  firstName              String
+  lastName               String
+  createdAt              DateTime             @default(now())
+  updatedAt              DateTime             @updatedAt
+  accountType            AccountType          @default(MEMBER)
+  middleName             String?
+  phone                  String?
+  birthday               DateTime?
+  separatedSubdivision   SeparatedSubdivision @relation(fields: [separatedSubdivisionId], references: [id])
+  separatedSubdivisionId Int
+  isMembershipActive     Boolean              @default(false)
+  membershipType         MembershipType       @default(FULL)
+  isExcluded             Boolean              @default(false)
+  excludedReason         String?
+  fullName               String?
+  activityTypes          ActivityTypesUsers[]
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model SeparatedSubdivision {
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  headName              String
+  contacts              String
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  isActive              Boolean  @default(true)
+  acceptsOnlinePayments Boolean  @default(false)
+  feeAmount             Int      @default(0)
+  users                 User[]
+}
+
+model ActivityType {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  ActivityTypesUsers ActivityTypesUsers[]
+}
+
+model ActivityTypesUsers {
+  id             Int          @id @default(autoincrement())
+  activityTypeId Int
+  activityType   ActivityType @relation(fields: [activityTypeId], references: [id])
+  userId         String
+  user           User         @relation(fields: [userId], references: [clerkId])
+}
+
+enum AccountType {
+  MEMBER
+  SERVICE
+}
+
+enum MembershipType {
+  FULL
+  REDUCED
 }
