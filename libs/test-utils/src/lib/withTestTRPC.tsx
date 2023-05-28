@@ -1,4 +1,4 @@
-import { type PropsWithChildren } from "react";
+import { type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createTRPCReact, httpBatchLink } from "@trpc/react-query";
 import SuperJSON from "superjson";
@@ -14,8 +14,8 @@ const trpcClient = trpcReact.createClient({
   transformer: SuperJSON,
 });
 
-export const withTestTRPC = ({ children }: PropsWithChildren) => (
+export const withTestTRPC = (component: ReactNode) => (
   <trpcReact.Provider client={trpcClient} queryClient={queryClient}>
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{component}</QueryClientProvider>
   </trpcReact.Provider>
 );
