@@ -1,10 +1,13 @@
 import { type GetServerSideProps } from "next";
-import { buildClerkProps, clerkClient, getAuth } from "@clerk/nextjs/server";
+import { getAuth } from "@clerk/nextjs/server";
+import { type User, getUser } from "./user";
 
-export const serverSidePropsWithUser: GetServerSideProps = async (ctx) => {
+export const serverSidePropsWithUser: GetServerSideProps<{
+  user: User;
+}> = async (ctx) => {
   const { userId } = getAuth(ctx.req);
 
-  const user = userId ? await clerkClient.users.getUser(userId) : undefined;
+  const user = userId ? await getUser(userId) : undefined;
 
-  return { props: { ...buildClerkProps(ctx.req, { user }) } };
+  return { props: { user: JSON.parse(JSON.stringify(user)) } };
 };
