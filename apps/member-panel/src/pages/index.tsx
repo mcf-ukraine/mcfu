@@ -5,11 +5,13 @@ import { Button } from "@mcfu/ui";
 import { LogoAndTitle } from "../components/LogoAndTitle/LogoAndTitle";
 import { ua } from "../locales/ua";
 import { serverSidePropsWithUser } from "../utils/serverSidePropsWithUser";
+import { api } from "../utils/trpc";
 
 export const getServerSideProps: GetServerSideProps = serverSidePropsWithUser;
 
 const Index = () => {
   const { user } = useUser();
+  const { data: userData } = api.user.me.useQuery();
   const { signOut } = useClerk();
 
   const handleClick = () => {
@@ -34,6 +36,12 @@ const Index = () => {
               <Button onClick={handleClick}>Вихід</Button>
             </div>
           </div>
+        )}
+
+        {userData && (
+          <pre className="my-4 max-w-lg text-xs">
+            {JSON.stringify(userData, null, 2)}
+          </pre>
         )}
       </div>
     </>
