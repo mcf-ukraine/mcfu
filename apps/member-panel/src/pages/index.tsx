@@ -11,14 +11,12 @@ export const getServerSideProps: GetServerSideProps = serverSidePropsWithUser;
 
 const Index = () => {
   const { user } = useUser();
+  const { data: userData } = api.user.me.useQuery();
   const { signOut } = useClerk();
 
   const handleClick = () => {
     signOut();
   };
-
-  const me = api.user.me.useQuery();
-  console.log(me);
 
   return (
     <>
@@ -38,6 +36,12 @@ const Index = () => {
               <Button onClick={handleClick}>Вихід</Button>
             </div>
           </div>
+        )}
+
+        {userData && (
+          <pre className="my-4 max-w-lg text-xs">
+            {JSON.stringify(userData, null, 2)}
+          </pre>
         )}
       </div>
     </>

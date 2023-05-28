@@ -14,6 +14,18 @@ export const userRouter = createTRPCRouter({
       where: {
         clerkId: ctx.auth.userId,
       },
+      include: {
+        separatedSubdivision: {
+          select: {
+            name: true,
+          },
+        },
+        activityTypes: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
 
     return user;

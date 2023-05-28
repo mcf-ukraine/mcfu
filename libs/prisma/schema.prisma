@@ -25,6 +25,7 @@ model User {
   middleName             String?
   phone                  String?
   birthday               DateTime?
+  activityTypes          ActivityType[]
   separatedSubdivision   SeparatedSubdivision @relation(fields: [separatedSubdivisionId], references: [id])
   separatedSubdivisionId Int
   isMembershipActive     Boolean              @default(false)
@@ -32,7 +33,6 @@ model User {
   isExcluded             Boolean              @default(false)
   excludedReason         String?
   fullName               String?
-  activityTypes          ActivityTypesUsers[]
 }
 
 model SeparatedSubdivision {
@@ -49,17 +49,9 @@ model SeparatedSubdivision {
 }
 
 model ActivityType {
-  id                 Int                  @id @default(autoincrement())
-  name               String
-  ActivityTypesUsers ActivityTypesUsers[]
-}
-
-model ActivityTypesUsers {
-  id             Int          @id @default(autoincrement())
-  activityTypeId Int
-  activityType   ActivityType @relation(fields: [activityTypeId], references: [id])
-  userId         String
-  user           User         @relation(fields: [userId], references: [clerkId])
+  id    Int    @id @default(autoincrement())
+  name  String
+  users User[]
 }
 
 enum AccountType {
