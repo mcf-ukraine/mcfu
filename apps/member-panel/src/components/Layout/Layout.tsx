@@ -1,10 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { type FC, Fragment, type PropsWithChildren, useState } from "react";
+import {
+  type FC,
+  Fragment,
+  type PropsWithChildren,
+  useState,
+  type ElementType,
+} from "react";
 import { useClerk } from "@clerk/nextjs";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Spinner, ToggleColorModeButton } from "@mcfu/ui";
+import { UserAvatar } from "./UserAvatar";
 import { ua } from "../../locales/ua";
 import { AuthGuard } from "../AuthGuard/AuthGuard";
 
@@ -14,11 +21,13 @@ const navigation = [
   { name: "Календар", href: "#", current: false },
   { name: "Підтримати ФАіСУ", href: "#", current: false },
 ];
-const userNavigation = [
-  { name: "Твій Профіль", href: "#" },
-  { name: "Налаштування", href: "#" },
-  { name: "Вихід", href: "#" },
-];
+
+type UserNavItem = {
+  name: string;
+  tag: ElementType;
+  href?: string;
+  onClick?: () => void;
+};
 
 const classNames = (...classes: string[]) => classes.filter(Boolean).join(" ");
 
@@ -27,6 +36,7 @@ type LayoutProps = {
   user: {
     name: string;
     email: string;
+    imageUrl?: string;
   };
 };
 
@@ -41,6 +51,12 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
     setIsSigningOut(true);
     signOut();
   };
+
+  const userNavigation: UserNavItem[] = [
+    { name: "Твій Профіль", tag: "a", href: "#" },
+    { name: "Налаштування", tag: "a", href: "#" },
+    { name: "Вихід", tag: "button", onClick: handleSignOut },
+  ];
 
   return (
     <AuthGuard>
@@ -111,15 +127,7 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                             data-testid="open-user-menu"
                           >
                             <span className="sr-only">Open user menu</span>
-                            <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-600">
-                              <svg
-                                className="h-full w-full text-gray-400"
-                                fill="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                              </svg>
-                            </span>
+                            <UserAvatar imageUrl={user.imageUrl} />
                           </Menu.Button>
                         ) : (
                           <Spinner
@@ -140,34 +148,23 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:border dark:border-gray-600 dark:bg-gray-800">
                           {userNavigation.map((item) => (
                             <Menu.Item key={item.name}>
-                              {({ active }) =>
-                                item.name === "Вихід" ? (
-                                  <button
-                                    type="button"
-                                    className={classNames(
-                                      active
-                                        ? "bg-gray-100 dark:bg-gray-700"
-                                        : "",
-                                      "block w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 dark:hover:text-gray-100"
-                                    )}
-                                    onClick={handleSignOut}
-                                  >
-                                    {item.name}
-                                  </button>
-                                ) : (
-                                  <a
-                                    href={item.href}
-                                    className={classNames(
-                                      active
-                                        ? "bg-gray-100 dark:bg-gray-700"
-                                        : "",
-                                      "block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 dark:hover:text-gray-100"
-                                    )}
-                                  >
-                                    {item.name}
-                                  </a>
-                                )
-                              }
+                              {({ active }) => (
+                                <item.tag
+                                  className={classNames(
+                                    active
+                                      ? "bg-gray-100 dark:bg-gray-700"
+                                      : "",
+                                    "block w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 dark:hover:text-gray-100"
+                                  )}
+                                  {...(item.tag === "a" && { href: item.href })}
+                                  {...(item.tag === "button" && {
+                                    type: "button",
+                                    onClick: item.onClick,
+                                  })}
+                                >
+                                  {item.name}
+                                </item.tag>
+                              )}
                             </Menu.Item>
                           ))}
                         </Menu.Items>
@@ -222,15 +219,7 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                 <div className="border-t border-gray-200 pb-3 pt-4 dark:border-gray-700">
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
-                      <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-600">
-                        <svg
-                          className="h-full w-full text-gray-400"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                      </span>
+                      <UserAvatar imageUrl={user.imageUrl} />
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium text-gray-800 dark:text-gray-300">
@@ -258,27 +247,17 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                     </div>
                   </div>
                   <div className="mt-3 space-y-1">
-                    {userNavigation.map((item) =>
-                      item.name === "Вихід" ? (
-                        <Disclosure.Button
-                          key={item.name}
-                          as="button"
-                          onClick={handleSignOut}
-                          className="block w-full px-4 py-2 text-left text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-400"
-                        >
-                          {item.name}
-                        </Disclosure.Button>
-                      ) : (
-                        <Disclosure.Button
-                          key={item.name}
-                          as="a"
-                          href={item.href}
-                          className="block w-full px-4 py-2 text-left text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-400"
-                        >
-                          {item.name}
-                        </Disclosure.Button>
-                      )
-                    )}
+                    {userNavigation.map((item) => (
+                      <Disclosure.Button
+                        key={item.name}
+                        as={item.tag}
+                        onClick={item.onClick}
+                        {...(item.tag === "a" && { href: item.href })}
+                        className="block w-full px-4 py-2 text-left text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-400"
+                      >
+                        {item.name}
+                      </Disclosure.Button>
+                    ))}
                   </div>
                 </div>
               </Disclosure.Panel>

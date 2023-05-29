@@ -1,13 +1,21 @@
 import { type GetServerSideProps } from "next";
-import { getAuth } from "@clerk/nextjs/server";
+import { clerkClient, getAuth } from "@clerk/nextjs/server";
 import { type User, getUser } from "./user";
 
 export const serverSidePropsWithUser: GetServerSideProps<{
-  user: User;
+  user: User & { imageUrl?: string };
 }> = async (ctx) => {
   const { userId } = getAuth(ctx.req);
 
-  const user = userId ? await getUser(userId) : undefined;
+  const clerkUser = await clerkClient.users.getUser(userId);
+  const dbUser = userId ? await getUser(userId) : undefined;
+  const imageUrl = clerkUser?.imageUrl ?? undefined;
 
-  return { props: { user: JSON.parse(JSON.stringify(user)) } };
+  return {
+    props: {
+      user: {
+        ...JSON.parse(JSON.stringify({ ...dbUser, imageUrl })),
+      },
+    },
+  };
 };
