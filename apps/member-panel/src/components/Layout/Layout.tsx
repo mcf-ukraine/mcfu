@@ -6,6 +6,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ToggleColorModeButton } from "@mcfu/ui";
 import { ua } from "../../locales/ua";
+import { AuthGuard } from "../AuthGuard/AuthGuard";
 
 const navigation = [
   { name: "Кабінет", href: "/", current: true },
@@ -38,7 +39,7 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
   };
 
   return (
-    <>
+    <AuthGuard>
       {/*
         This example requires updating your template:
 
@@ -96,7 +97,13 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                     </button>
 
                     <div className="ml-3">
-                      <ToggleColorModeButton outlined />
+                      <ToggleColorModeButton
+                        outlined
+                        colorLight="gray-400"
+                        colorHoverLight="gray-500"
+                        colorDark="gray-400"
+                        colorHoverDark="gray-300"
+                      />
                     </div>
 
                     {/* Profile dropdown */}
@@ -130,22 +137,34 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:border dark:border-gray-600 dark:bg-gray-800">
                           {userNavigation.map((item) => (
                             <Menu.Item key={item.name}>
-                              {({ active }) => (
-                                <a
-                                  href={item.href}
-                                  className={classNames(
-                                    active
-                                      ? "bg-gray-100 dark:bg-gray-700"
-                                      : "",
-                                    "block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 dark:hover:text-gray-100"
-                                  )}
-                                  {...(item.name === "Вихід" && {
-                                    onClick: handleSignOut,
-                                  })}
-                                >
-                                  {item.name}
-                                </a>
-                              )}
+                              {({ active }) =>
+                                item.name === "Вихід" ? (
+                                  <button
+                                    type="button"
+                                    className={classNames(
+                                      active
+                                        ? "bg-gray-100 dark:bg-gray-700"
+                                        : "",
+                                      "block w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 dark:hover:text-gray-100"
+                                    )}
+                                    onClick={handleSignOut}
+                                  >
+                                    {item.name}
+                                  </button>
+                                ) : (
+                                  <a
+                                    href={item.href}
+                                    className={classNames(
+                                      active
+                                        ? "bg-gray-100 dark:bg-gray-700"
+                                        : "",
+                                      "block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 dark:hover:text-gray-100"
+                                    )}
+                                  >
+                                    {item.name}
+                                  </a>
+                                )
+                              }
                             </Menu.Item>
                           ))}
                         </Menu.Items>
@@ -154,7 +173,7 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                   </div>
                   <div className="-mr-2 flex items-center sm:hidden">
                     {/* Mobile menu button */}
-                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2">
+                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2 dark:bg-transparent">
                       <span className="sr-only">Open main menu</span>
                       {open ? (
                         <XMarkIcon
@@ -181,8 +200,8 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                       href={item.href}
                       className={classNames(
                         item.current
-                          ? "border-sky-500 bg-sky-50 text-sky-700"
-                          : "border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800",
+                          ? "border-sky-500 bg-sky-50 text-sky-700 dark:bg-gray-700 dark:text-white"
+                          : "border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-gray-700",
                         "block border-l-4 py-2 pl-3 pr-4 text-base font-medium"
                       )}
                       aria-current={item.current ? "page" : undefined}
@@ -191,10 +210,10 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                     </Disclosure.Button>
                   ))}
                 </div>
-                <div className="border-t border-gray-200 pb-3 pt-4">
+                <div className="border-t border-gray-200 pb-3 pt-4 dark:border-gray-700">
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
-                      <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-200">
+                      <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-600">
                         <svg
                           className="h-full w-full text-gray-400"
                           fill="currentColor"
@@ -205,32 +224,52 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                       </span>
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium text-gray-800">
+                      <div className="text-base font-medium text-gray-800 dark:text-gray-300">
                         {user.name}
                       </div>
-                      <div className="text-sm font-medium text-gray-500">
+                      <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
                         {user.email}
                       </div>
                     </div>
                     <button
                       type="button"
-                      className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+                      className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 dark:bg-gray-800 dark:hover:text-gray-300"
                     >
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
+                    <div className="ml-3">
+                      <ToggleColorModeButton
+                        outlined
+                        colorLight="gray-400"
+                        colorHoverLight="gray-500"
+                        colorDark="gray-400"
+                        colorHoverDark="gray-300"
+                      />
+                    </div>
                   </div>
                   <div className="mt-3 space-y-1">
-                    {userNavigation.map((item) => (
-                      <Disclosure.Button
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
-                      >
-                        {item.name}
-                      </Disclosure.Button>
-                    ))}
+                    {userNavigation.map((item) =>
+                      item.name === "Вихід" ? (
+                        <Disclosure.Button
+                          key={item.name}
+                          as="button"
+                          onClick={handleSignOut}
+                          className="block w-full px-4 py-2 text-left text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-400"
+                        >
+                          {item.name}
+                        </Disclosure.Button>
+                      ) : (
+                        <Disclosure.Button
+                          key={item.name}
+                          as="a"
+                          href={item.href}
+                          className="block w-full px-4 py-2 text-left text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-400"
+                        >
+                          {item.name}
+                        </Disclosure.Button>
+                      )
+                    )}
                   </div>
                 </div>
               </Disclosure.Panel>
@@ -251,6 +290,6 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
           </main>
         </div>
       </div>
-    </>
+    </AuthGuard>
   );
 };

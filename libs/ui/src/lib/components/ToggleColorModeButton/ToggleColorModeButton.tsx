@@ -5,26 +5,39 @@ import {
 } from "@heroicons/react/24/outline";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 import { useTheme } from "next-themes";
+import { type Color } from "../../types";
 
 type ToggleColorModeButtonProps = {
   outlined?: boolean;
+  colorLight?: Color;
+  colorHoverLight?: Color;
+  colorDark?: Color;
+  colorHoverDark?: Color;
 };
 
 export const ToggleColorModeButton = ({
   outlined,
+  colorLight,
+  colorHoverLight,
+  colorDark,
+  colorHoverDark,
 }: ToggleColorModeButtonProps) => {
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
   const [mounted, setMounted] = useState(false);
 
   const sunIconProps = {
-    className: "h-6 w-6 text-white",
+    className: `h-6 w-6 text-${colorDark ?? "white"} dark:hover:text-${
+      colorHoverDark ?? "white"
+    }`,
     role: "button",
     onClick: () => setTheme("light"),
   };
 
   const moonIconProps = {
-    className: "h-6 w-6 text-slate-600",
+    className: `h-6 w-6 text-${colorLight ?? "slate-600"} hover:text-${
+      colorHoverLight ?? "slate-600"
+    }`,
     role: "button",
     onClick: () => setTheme("dark"),
   };
