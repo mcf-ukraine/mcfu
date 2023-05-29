@@ -3,6 +3,8 @@ import { sql } from "@vercel/postgres";
 import { prisma } from "@mcfu/trpc-server";
 
 export const getUser = async (userId: string) => {
+  const start = performance.now();
+
   const user = await prisma.user.findUnique({
     where: {
       clerkId: userId,
@@ -32,6 +34,9 @@ export const getUser = async (userId: string) => {
     },
   });
 
+  const end = performance.now();
+  console.log(`Execution time: ${end - start} ms`);
+
   return user;
 };
 
@@ -39,7 +44,9 @@ export type User = Prisma.PromiseReturnType<typeof getUser>;
 
 // Vercel Postgres version
 export const getUserVercelPostgres = async (userId: string) => {
-  const { rows } = await sql`
+  const start = performance.now();
+
+  const { rows } = await sql<User>`
     SELECT
       u.id,
       u.email,
@@ -52,17 +59,22 @@ export const getUserVercelPostgres = async (userId: string) => {
       u."isMembershipActive",
       u."membershipType",
       u."fullName",
-      s.name AS "separatedSubdivisionName",
-      array_agg(at.name) AS "activityTypes"
-    FROM "user" u
-    LEFT JOIN "separatedSubdivision" s ON u."separatedSubdivisionId" = s.id
-    LEFT JOIN "userActivityType" uat ON u.id = uat."userId"
-    LEFT JOIN "activityType" at ON uat."activityTypeId" = at.id
+      json_build_object('name', ss.name) AS "separatedSubdivision",
+      json_agg(json_build_object('name', at.name)) AS "activityTypes"
+    FROM "User" u
+    LEFT JOIN "SeparatedSubdivision" ss ON u."separatedSubdivisionId" = ss.id
+    LEFT JOIN "_ActivityTypeToUser" uat ON u.id = uat."B"
+    LEFT JOIN "ActivityType" at ON uat."A" = at.id
     WHERE u."clerkId" = ${userId}
-    GROUP BY u.id, s.name
-    `;
+    GROUP BY u.id, ss.name
+  `;
 
-  const user = rows[0];
+  const end = performance.now();
+  console.log(`Execution time: ${end - start} ms`);
+
+  const user = {
+    ...rows[0],
+  };
 
   return user;
 };
