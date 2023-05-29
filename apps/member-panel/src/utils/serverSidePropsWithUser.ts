@@ -1,6 +1,6 @@
 import { type GetServerSideProps } from "next";
 import { clerkClient, getAuth } from "@clerk/nextjs/server";
-import { type User, getUser } from "./user";
+import { type User, getUser, getUserVercelPostgres } from "./user";
 
 export const serverSidePropsWithUser: GetServerSideProps<{
   user: User & { imageUrl?: string };
@@ -8,7 +8,7 @@ export const serverSidePropsWithUser: GetServerSideProps<{
   const { userId } = getAuth(ctx.req);
 
   const clerkUser = await clerkClient.users.getUser(userId);
-  const dbUser = userId ? await getUser(userId) : undefined;
+  const dbUser = userId ? await getUserVercelPostgres(userId) : undefined;
   const imageUrl = clerkUser?.imageUrl ?? undefined;
 
   return {
