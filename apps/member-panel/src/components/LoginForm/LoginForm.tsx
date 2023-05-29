@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { type FormEvent, useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
-import { type OAuthStrategy } from "@clerk/nextjs/dist/api";
+import { type OAuthStrategy } from "@clerk/nextjs/dist/types/server";
 import { type SignInResource } from "@clerk/types/dist/signIn";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import { log } from "next-axiom";
