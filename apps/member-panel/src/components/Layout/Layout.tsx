@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { type FC, Fragment, type PropsWithChildren } from "react";
+import { type FC, Fragment, type PropsWithChildren, useState } from "react";
 import { useClerk } from "@clerk/nextjs";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { ToggleColorModeButton } from "@mcfu/ui";
+import { Spinner, ToggleColorModeButton } from "@mcfu/ui";
 import { ua } from "../../locales/ua";
 import { AuthGuard } from "../AuthGuard/AuthGuard";
 
@@ -23,6 +23,7 @@ const userNavigation = [
 const classNames = (...classes: string[]) => classes.filter(Boolean).join(" ");
 
 type LayoutProps = {
+  pageTitle?: string;
   user: {
     name: string;
     email: string;
@@ -30,24 +31,19 @@ type LayoutProps = {
 };
 
 export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
+  pageTitle,
   user,
   children,
 }) => {
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const { signOut } = useClerk();
   const handleSignOut = () => {
+    setIsSigningOut(true);
     signOut();
   };
 
   return (
     <AuthGuard>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full">
         <Disclosure
           as="nav"
@@ -108,22 +104,29 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
 
                     {/* Profile dropdown */}
                     <Menu as="div" className="relative ml-4">
-                      <div>
-                        <Menu.Button
-                          className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2"
-                          data-testid="open-user-menu"
-                        >
-                          <span className="sr-only">Open user menu</span>
-                          <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-600">
-                            <svg
-                              className="h-full w-full text-gray-400"
-                              fill="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                          </span>
-                        </Menu.Button>
+                      <div className="flex">
+                        {!isSigningOut ? (
+                          <Menu.Button
+                            className="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2"
+                            data-testid="open-user-menu"
+                          >
+                            <span className="sr-only">Open user menu</span>
+                            <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-600">
+                              <svg
+                                className="h-full w-full text-gray-400"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                              </svg>
+                            </span>
+                          </Menu.Button>
+                        ) : (
+                          <Spinner
+                            color="text-sky-600"
+                            darkColor="text-sky-500"
+                          />
+                        )}
                       </div>
                       <Transition
                         as={Fragment}
@@ -173,17 +176,23 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                   </div>
                   <div className="-mr-2 flex items-center sm:hidden">
                     {/* Mobile menu button */}
-                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2 dark:bg-transparent">
+                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2 dark:bg-transparent">
                       <span className="sr-only">Open main menu</span>
                       {open ? (
                         <XMarkIcon
                           className="block h-6 w-6"
                           aria-hidden="true"
                         />
-                      ) : (
+                      ) : !isSigningOut ? (
                         <Bars3Icon
                           className="block h-6 w-6"
                           aria-hidden="true"
+                        />
+                      ) : (
+                        <Spinner
+                          color="text-sky-600"
+                          darkColor="text-sky-500"
+                          size={6}
                         />
                       )}
                     </Disclosure.Button>
@@ -281,7 +290,7 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
           <header>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h1 className="mb-4 text-3xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
-                Кабінет
+                {pageTitle ?? ua.common.title}
               </h1>
             </div>
           </header>

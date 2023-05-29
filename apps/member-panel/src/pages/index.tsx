@@ -13,6 +13,7 @@ const Index = ({ user }: Props) => (
       <title>{ua.pages.home.titleTag}</title>
     </Head>
     <Layout
+      pageTitle={ua.pages.home.content.title}
       user={{ name: `${user.firstName} ${user.lastName}`, email: user.email }}
     >
       <HomePageContent user={user} />

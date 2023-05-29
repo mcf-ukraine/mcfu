@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { toast as reactHotToast } from "react-hot-toast";
-import { Toast as ToastComponent } from "../components";
+import { Spinner, Toast as ToastComponent } from "../components";
 
 type ToastParams = {
   title?: ReactNode;
@@ -11,6 +11,7 @@ type ToastParams = {
 type Toast = {
   success: (params: ToastParams) => void;
   error: (params: ToastParams) => void;
+  loading: (params: ToastParams) => void;
 };
 
 export const toast: Toast = {
@@ -35,6 +36,15 @@ export const toast: Toast = {
         icon={
           <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
         }
+        title={title}
+        message={message}
+      />
+    )),
+  loading: ({ title, message }) =>
+    reactHotToast.custom((t) => (
+      <ToastComponent
+        t={t}
+        icon={<Spinner size={6} />}
         title={title}
         message={message}
       />

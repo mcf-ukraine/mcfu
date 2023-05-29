@@ -7,6 +7,9 @@ export const ua = {
   pages: {
     home: {
       titleTag: "Кабінет ФАіСУ",
+      content: {
+        title: "Кабінет",
+      },
     },
     login: {
       meta: {
