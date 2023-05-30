@@ -1,4 +1,4 @@
-import { MemberStatusBadge } from "./MemberStatusBadge";
+import { MembershipStatusBadge } from "./MembershipStatusBadge";
 import { type User } from "../../utils/user";
 
 type HomePageContentProps = {
@@ -20,13 +20,21 @@ export const HomePageContent = ({
 
   return (
     <div className="overflow-hidden bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:rounded-lg">
-      <div className="px-4 py-6 sm:px-6">
-        <h3 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
-          Інформація про члена
-        </h3>
-        <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400">
-          Дані з профілю
-        </p>
+      <div className="flex flex-col px-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <div>
+          <h3 className="mb-1 text-base font-semibold leading-7 text-gray-900 dark:text-white sm:mb-0">
+            Інформація про члена
+          </h3>
+          <p className="mt-1 hidden max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400 sm:block">
+            Дані з профілю
+          </p>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Статус членства:{" "}
+            <MembershipStatusBadge isMembershipActive={isMembershipActive} />
+          </p>
+        </div>
       </div>
       <div className="border-t border-gray-200/75 dark:border-gray-700">
         <dl className="divide-y divide-gray-200/75 dark:divide-gray-700">
@@ -35,8 +43,7 @@ export const HomePageContent = ({
               Прізвище, ім&apos;я, по-батькові
             </dt>
             <dd className="mt-1 flex text-sm leading-6 text-gray-700 dark:text-gray-400 sm:col-span-2 sm:mt-0">
-              {fullName}{" "}
-              <MemberStatusBadge isMembershipActive={isMembershipActive} />
+              {fullName}
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
