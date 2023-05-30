@@ -1,30 +1,18 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { withClerkMiddleware, getAuth } from "@clerk/nextjs/server";
+import { authMiddleware } from "@clerk/nextjs/server";
 import { publicPages } from "./constants/publicPages";
 
-const isPublic = (path: string) =>
-  publicPages.find((x) =>
-    path.match(new RegExp(`^${x}$`.replace("*$", "($|/)")))
-  );
+export default authMiddleware({
+  afterAuth(auth, request) {
+    if (!auth.userId && !auth.isPublicRoute) {
+      const signInUrl = new URL("/login", request.url);
+      signInUrl.searchParams.set("redirect_url", request.url);
 
-export default withClerkMiddleware((request: NextRequest) => {
-  if (isPublic(request.nextUrl.pathname)) {
-    return NextResponse.next();
-  }
+      return NextResponse.redirect(signInUrl);
+    }
+  },
 
-  // if the user is not signed in redirect them to the sign in page.
-  const { userId } = getAuth(request);
-
-  if (!userId) {
-    // redirect the users to /pages/login/[[...index]].ts
-    const signInUrl = new URL("/login", request.url);
-    signInUrl.searchParams.set("redirect_url", request.url);
-
-    return NextResponse.redirect(signInUrl);
-  }
-
-  return NextResponse.next();
+  publicRoutes: publicPages,
 });
 
 // Stop Middleware running on static files and public folder

@@ -1,3 +1,4 @@
+import { MemberStatusBadge } from "./MemberStatusBadge";
 import { type User } from "../../utils/user";
 
 type HomePageContentProps = {
@@ -24,40 +25,18 @@ export const HomePageContent = ({
           Інформація про члена
         </h3>
         <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400">
-          Персональні дані
+          Дані з профілю
         </p>
       </div>
-      <div className="border-t border-gray-100 dark:border-gray-700">
-        <dl className="divide-y divide-gray-100 dark:divide-gray-700">
+      <div className="border-t border-gray-200/75 dark:border-gray-700">
+        <dl className="divide-y divide-gray-200/75 dark:divide-gray-700">
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-sm font-medium text-gray-900 dark:text-white">
               Прізвище, ім&apos;я, по-батькові
             </dt>
             <dd className="mt-1 flex text-sm leading-6 text-gray-700 dark:text-gray-400 sm:col-span-2 sm:mt-0">
               {fullName}{" "}
-              {isMembershipActive ? (
-                <span className="ml-2 inline-flex items-center gap-x-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-500/10 dark:text-green-400">
-                  <svg
-                    className="h-1.5 w-1.5 fill-green-500"
-                    viewBox="0 0 6 6"
-                    aria-hidden="true"
-                  >
-                    <circle cx={3} cy={3} r={3} />
-                  </svg>
-                  Активний
-                </span>
-              ) : (
-                <span className="ml-2 inline-flex items-center gap-x-1.5 rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700 dark:bg-red-500/10 dark:text-red-400">
-                  <svg
-                    className="h-1.5 w-1.5 fill-red-500"
-                    viewBox="0 0 6 6"
-                    aria-hidden="true"
-                  >
-                    <circle cx={3} cy={3} r={3} />
-                  </svg>
-                  Неактивний
-                </span>
-              )}
+              <MemberStatusBadge isMembershipActive={isMembershipActive} />
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
