@@ -29,4 +29,5 @@ export const config = {
     "/",
     "/(api|trpc)(.*)",
   ],
+  runtime: "experimental-edge",
 };
