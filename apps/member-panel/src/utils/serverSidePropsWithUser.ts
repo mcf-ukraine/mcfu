@@ -1,6 +1,6 @@
 import { type GetServerSideProps } from "next";
 import { clerkClient, getAuth } from "@clerk/nextjs/server";
-import { type User, getUser } from "./user";
+import { type User, getUser } from "./userSupabase";
 
 export const serverSidePropsWithUser: GetServerSideProps<{
   user: User & { imageUrl?: string };

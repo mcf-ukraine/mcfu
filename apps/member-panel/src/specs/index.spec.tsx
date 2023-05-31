@@ -41,6 +41,8 @@ const userMock = {
 };
 
 const renderComponent = () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   render(<Index user={userMock} />);
 };
 

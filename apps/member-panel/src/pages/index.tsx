@@ -20,6 +20,8 @@ const Index = ({ user }: Props) => (
         imageUrl: user.imageUrl,
       }}
     >
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore */}
       <HomePageContent user={user} />
     </Layout>
   </>

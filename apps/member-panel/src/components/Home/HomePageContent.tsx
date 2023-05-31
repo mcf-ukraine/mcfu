@@ -1,8 +1,8 @@
 import { MembershipStatusBadge } from "./MembershipStatusBadge";
-import { type User } from "../../utils/user";
+// import { type User } from "../../utils/user";
 
 type HomePageContentProps = {
-  user: User;
+  user: any;
 };
 
 export const HomePageContent = ({
