@@ -4,6 +4,10 @@ import { HomePageContent, Layout } from "../components";
 import { ua } from "../locales/ua";
 import { serverSidePropsWithUser } from "../utils/serverSidePropsWithUser";
 
+export const config = {
+  runtime: "edge",
+};
+
 export const getServerSideProps = serverSidePropsWithUser;
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
