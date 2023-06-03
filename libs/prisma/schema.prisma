@@ -32,6 +32,7 @@ model User {
   isExcluded             Boolean              @default(false)
   excludedReason         String?
   fullName               String?
+  fees                   Fee[]
 }
 
 model SeparatedSubdivision {
@@ -45,12 +46,27 @@ model SeparatedSubdivision {
   acceptsOnlinePayments Boolean  @default(false)
   feeAmount             Int      @default(0)
   users                 User[]
+  fees                  Fee[]
 }
 
 model ActivityType {
   id    Int    @id @default(autoincrement())
   name  String
   users User[]
+}
+
+model Fee {
+  id                     Int                  @id @default(autoincrement())
+  year                   Int
+  paid                   Boolean              @default(false)
+  paymentDate            DateTime?
+  createdAt              DateTime             @default(now())
+  updatedAt              DateTime             @updatedAt
+  amount                 Int
+  user                   User                 @relation(fields: [userId], references: [id])
+  userId                 Int
+  separatedSubdivision   SeparatedSubdivision @relation(fields: [separatedSubdivisionId], references: [id])
+  separatedSubdivisionId Int
 }
 
 enum AccountType {
