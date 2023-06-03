@@ -4,7 +4,7 @@ import { mergeConfig } from "vite";
 const config: StorybookConfig = {
   core: {},
   stories: ["../src/lib/**/*.mdx", "../src/lib/**/*.stories.@(js|jsx|ts|tsx)"],
-  addons: ["@storybook/addon-essentials"],
+  addons: ["@storybook/addon-essentials", "@storybook/addon-styling"],
   async viteFinal(config: any) {
     return mergeConfig(config, {});
   },

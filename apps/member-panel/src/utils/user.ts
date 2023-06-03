@@ -28,6 +28,18 @@ export const getUser = async (userId: string) => {
           name: true,
         },
       },
+      fees: {
+        select: {
+          id: true,
+          year: true,
+          amount: true,
+          paid: true,
+          paymentDate: true,
+        },
+        orderBy: {
+          year: "desc",
+        },
+      },
     },
   });
 

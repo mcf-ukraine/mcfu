@@ -10,6 +10,7 @@ import {
 import { useClerk } from "@clerk/nextjs";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
 import { Spinner, ToggleColorModeButton } from "@mcfu/ui";
 import { UserAvatar } from "./UserAvatar";
 import { ua } from "../../locales/ua";
@@ -19,7 +20,12 @@ const navigation = [
   { name: "Кабінет", href: "/", current: true },
   { name: "Профіль", href: "#", current: false },
   { name: "Календар", href: "#", current: false },
-  { name: "Підтримати ФАіСУ", href: "#", current: false },
+  {
+    name: "Підтримати ФАіСУ",
+    href: "https://payments.fais.org.ua/donations/",
+    target: "_blank",
+    current: false,
+  },
 ];
 
 type UserNavItem = {
@@ -28,8 +34,6 @@ type UserNavItem = {
   href?: string;
   onClick?: () => void;
 };
-
-const classNames = (...classes: string[]) => classes.filter(Boolean).join(" ");
 
 type LayoutProps = {
   pageTitle?: string;
@@ -86,13 +90,14 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                         <Link
                           key={item.name}
                           href={item.href}
-                          className={classNames(
+                          className={clsx(
                             item.current
                               ? "border-sky-600 text-gray-900 dark:border-sky-500 dark:text-white"
                               : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-300",
                             "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium"
                           )}
                           aria-current={item.current ? "page" : undefined}
+                          target={item.target}
                         >
                           {item.name}
                         </Link>
@@ -104,7 +109,7 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                       type="button"
                       className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2 dark:bg-gray-800 dark:hover:text-gray-300"
                     >
-                      <span className="sr-only">View notifications</span>
+                      <span className="sr-only">Побачити сповіщення</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
 
@@ -126,7 +131,9 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                             className="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2"
                             data-testid="open-user-menu"
                           >
-                            <span className="sr-only">Open user menu</span>
+                            <span className="sr-only">
+                              Відкрити меню користувача
+                            </span>
                             <UserAvatar imageUrl={user.imageUrl} />
                           </Menu.Button>
                         ) : (
@@ -150,7 +157,7 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                             <Menu.Item key={item.name}>
                               {({ active }) => (
                                 <item.tag
-                                  className={classNames(
+                                  className={clsx(
                                     active
                                       ? "bg-gray-100 dark:bg-gray-700"
                                       : "",
@@ -174,7 +181,7 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                   <div className="-mr-2 flex items-center sm:hidden">
                     {/* Mobile menu button */}
                     <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2 dark:bg-transparent">
-                      <span className="sr-only">Open main menu</span>
+                      <span className="sr-only">Відкрити головне меню</span>
                       {open ? (
                         <XMarkIcon
                           className="block h-6 w-6"
@@ -204,13 +211,14 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                       key={item.name}
                       as="a"
                       href={item.href}
-                      className={classNames(
+                      className={clsx(
                         item.current
                           ? "border-sky-500 bg-sky-50 text-sky-700 dark:bg-gray-700 dark:text-white"
                           : "border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-gray-700",
                         "block border-l-4 py-2 pl-3 pr-4 text-base font-medium"
                       )}
                       aria-current={item.current ? "page" : undefined}
+                      target={item.target}
                     >
                       {item.name}
                     </Disclosure.Button>
@@ -233,7 +241,7 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
                       type="button"
                       className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 dark:bg-gray-800 dark:hover:text-gray-300"
                     >
-                      <span className="sr-only">View notifications</span>
+                      <span className="sr-only">Побачити сповіщення</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
                     <div className="ml-3">
