@@ -75,7 +75,6 @@ export const FeesTable = ({ fees }: FeesTableProps) => (
                 <div className="mb-2 inline-block rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20 sm:mb-0 sm:mr-4">
                   Заборгованість
                 </div>
-
                 <Button>Сплатити</Button>
               </div>
             )}
