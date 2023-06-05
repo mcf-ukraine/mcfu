@@ -19,10 +19,12 @@ export const HomePageContent = ({
   },
 }: HomePageContentProps) => {
   const birthdayDate = new Date(birthday);
+  const feesArePresent = fees.length > 0;
+  const infoColSpan = feesArePresent ? "3" : "5";
 
   return (
     <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-5 lg:gap-8">
-      <div className="grid grid-cols-1 gap-4 lg:col-span-3">
+      <div className={`grid grid-cols-1 gap-4 lg:col-span-${infoColSpan}`}>
         <div className="overflow-hidden bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:rounded-lg">
           <div className="px-4 py-6 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-6">
             <div>
@@ -110,23 +112,25 @@ export const HomePageContent = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:col-span-2">
-        <section aria-labelledby="section-2-title">
-          <div className="overflow-hidden rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800">
-            <div className="px-6 pb-3 pt-6">
-              <h3 className="mb-1 text-base font-semibold leading-7 text-gray-900 dark:text-white sm:mb-0">
-                Внески
-              </h3>
-              <p className="mt-1 hidden max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400 sm:block">
-                Історія оплати внесків
-              </p>
+      {feesArePresent && (
+        <div className="grid grid-cols-1 gap-4 lg:col-span-2">
+          <section aria-labelledby="section-2-title">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800">
+              <div className="px-6 pb-3 pt-6">
+                <h3 className="mb-1 text-base font-semibold leading-7 text-gray-900 dark:text-white sm:mb-0">
+                  Внески
+                </h3>
+                <p className="mt-1 hidden max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400 sm:block">
+                  Історія оплати внесків
+                </p>
+              </div>
+              <div>
+                <FeesTable fees={fees} />
+              </div>
             </div>
-            <div>
-              <FeesTable fees={fees} />
-            </div>
-          </div>
-        </section>
-      </div>
+          </section>
+        </div>
+      )}
     </div>
   );
 };
