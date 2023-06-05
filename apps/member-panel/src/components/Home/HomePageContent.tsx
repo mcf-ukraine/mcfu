@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { FeesTable } from "./FeesTable";
 import { MembershipStatusBadge } from "./MembershipStatusBadge";
 import { type User } from "../../utils/user";
@@ -20,11 +21,15 @@ export const HomePageContent = ({
 }: HomePageContentProps) => {
   const birthdayDate = new Date(birthday);
   const feesArePresent = fees.length > 0;
-  const infoColSpan = feesArePresent ? "3" : "5";
 
   return (
     <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-5 lg:gap-8">
-      <div className={`grid grid-cols-1 gap-4 lg:col-span-${infoColSpan}`}>
+      <div
+        className={clsx(
+          "grid grid-cols-1 gap-4",
+          feesArePresent ? "lg:col-span-3" : "lg:col-span-5"
+        )}
+      >
         <div className="overflow-hidden bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:rounded-lg">
           <div className="px-4 py-6 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-6">
             <div>
