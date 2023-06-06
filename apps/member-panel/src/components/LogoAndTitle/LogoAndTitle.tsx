@@ -16,9 +16,7 @@ export const LogoAndTitle = () => (
       <div className="ml-1 p-1.5">
         <ToggleColorModeButton
           outlined
-          // colorLight="gray-400"
           colorHoverLight="gray-500"
-          // colorDark="gray-400"
           colorHoverDark="gray-300"
         />
       </div>
