@@ -13,8 +13,12 @@ export const LogoAndTitle = () => (
     />
     <h2 className="mt-6 flex items-center justify-center text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
       {ua.common.title}
-      <div className="ml-2 rounded bg-white p-1.5 shadow dark:bg-slate-700">
-        <ToggleColorModeButton />
+      <div className="ml-1 p-1.5">
+        <ToggleColorModeButton
+          outlined
+          colorHoverLight="gray-500"
+          colorHoverDark="gray-300"
+        />
       </div>
     </h2>
   </>
