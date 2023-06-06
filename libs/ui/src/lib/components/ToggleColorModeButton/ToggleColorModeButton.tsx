@@ -27,17 +27,17 @@ export const ToggleColorModeButton = ({
   const [mounted, setMounted] = useState(false);
 
   const sunIconProps = {
-    className: `h-6 w-6 text-${colorDark ?? "white"} dark:hover:text-${
-      colorHoverDark ?? "white"
-    }`,
+    className: `h-6 w-6 transition-all text-${
+      colorDark ?? "white"
+    } dark:hover:text-${colorHoverDark ?? "white"}`,
     role: "button",
     onClick: () => setTheme("light"),
   };
 
   const moonIconProps = {
-    className: `h-6 w-6 text-${colorLight ?? "slate-600"} hover:text-${
-      colorHoverLight ?? "slate-600"
-    }`,
+    className: `h-6 w-6 transition-all text-${
+      colorLight ?? "slate-600"
+    } hover:text-${colorHoverLight ?? "slate-600"}`,
     role: "button",
     onClick: () => setTheme("dark"),
   };
