@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { Toaster } from "@mcfu/ui";
 import { LoginForm } from "../components";
 import { LogoAndTitle } from "../components/LogoAndTitle/LogoAndTitle";
 import { ua } from "../locales/ua";
@@ -23,7 +22,6 @@ const Login = () => (
       </div>
       <LoginForm />
     </div>
-    <Toaster />
   </>
 );
 

@@ -1,6 +1,6 @@
 import clsx from "clsx";
+import { type User } from "@mcfu/trpc-server";
 import { Button } from "@mcfu/ui";
-import { type User } from "../../utils/user";
 
 type FeesTableProps = {
   fees: User["fees"];

@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { prisma } from "../../db";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { getUser } from "../utils";
 
 export const userRouter = createTRPCRouter({
   hello: publicProcedure
@@ -9,25 +9,5 @@ export const userRouter = createTRPCRouter({
       greeting: `Hello ${input.text}`,
     })),
 
-  me: protectedProcedure.query(async ({ ctx }) => {
-    const user = await prisma.user.findUnique({
-      where: {
-        clerkId: ctx.auth.userId,
-      },
-      include: {
-        separatedSubdivision: {
-          select: {
-            name: true,
-          },
-        },
-        activityTypes: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    });
-
-    return user;
-  }),
+  me: protectedProcedure.query(({ ctx }) => getUser(ctx.auth.userId)),
 });
