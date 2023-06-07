@@ -8,6 +8,10 @@ import { env } from "../env.mjs";
 import { ua } from "../locales/ua";
 import { withHomeRedirect } from "../utils/withHomeRedirect";
 
+export const config = {
+  runtime: "experimental-edge",
+};
+
 export const getServerSideProps = withHomeRedirect;
 
 const VerifyEmail = () => {
