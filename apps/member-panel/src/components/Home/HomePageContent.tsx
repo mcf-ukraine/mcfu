@@ -1,14 +1,37 @@
+import { useEffect } from "react";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+import { toast } from "@mcfu/ui";
 import { FeesTable } from "./FeesTable";
+import { MemberInfoPlaceholder } from "./MemberInfoPlaceholder";
 import { MembershipStatusBadge } from "./MembershipStatusBadge";
-import { type User } from "../../utils/user";
+import { api } from "../../utils/trpc";
 
-type HomePageContentProps = {
-  user: User;
-};
+export const HomePageContent = () => {
+  const { isLoading, error, data } = api.user.me.useQuery();
 
-export const HomePageContent = ({
-  user: {
+  useEffect(() => {
+    if (error) {
+      toast.error({
+        title: "Помилка",
+        message: "Щось пішло не так, ми не змогли завантажити ваші дані.",
+      });
+    }
+  }, [error]);
+
+  if (isLoading) {
+    return <MemberInfoPlaceholder />;
+  }
+
+  if (error) {
+    return (
+      <div className="my-40 flex items-center justify-center">
+        <ExclamationCircleIcon className="h-8 w-8" />
+      </div>
+    );
+  }
+
+  const {
     fullName,
     email,
     phone,
@@ -17,9 +40,8 @@ export const HomePageContent = ({
     separatedSubdivision,
     activityTypes,
     fees,
-  },
-}: HomePageContentProps) => {
-  const birthdayDate = new Date(birthday);
+  } = data;
+
   const feesArePresent = fees.length > 0;
 
   return (
@@ -80,7 +102,7 @@ export const HomePageContent = ({
                   Дата народження
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-400 sm:mt-0">
-                  {birthdayDate.toLocaleDateString("uk-UA")}
+                  {birthday.toLocaleDateString("uk-UA")}
                 </dd>
               </div>
               <div className="px-4 py-6 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-6">
