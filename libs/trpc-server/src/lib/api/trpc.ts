@@ -20,7 +20,6 @@ import {
   type SignedOutAuthObject,
 } from "@clerk/nextjs/server";
 import { TRPCError, initTRPC } from "@trpc/server";
-import { type FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -49,10 +48,8 @@ const createInnerTRPCContext = async ({ auth }: AuthContext) => ({
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async ({ req }: FetchCreateContextFnOptions) =>
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  await createInnerTRPCContext({ auth: getAuth(req) });
+export const createTRPCContext = async (opts: CreateNextContextOptions) =>
+  await createInnerTRPCContext({ auth: getAuth(opts.req) });
 
 /**
  * 2. INITIALIZATION
