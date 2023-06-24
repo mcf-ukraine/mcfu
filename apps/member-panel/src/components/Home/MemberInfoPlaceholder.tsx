@@ -39,7 +39,7 @@ export const MemberInfoPlaceholder = () => (
         </div>
         <div className="h-2.5 w-12 rounded-full bg-gray-300 dark:bg-gray-700"></div>
       </div>
-      <span className="sr-only">Loading...</span>
+      <span className="sr-only">Завантаження...</span>
     </div>
 
     <div
@@ -74,7 +74,7 @@ export const MemberInfoPlaceholder = () => (
         </div>
         <div className="h-2.5 w-12 rounded-full bg-gray-300 dark:bg-gray-700"></div>
       </div>
-      <span className="sr-only">Loading...</span>
+      <span className="sr-only">Завантаження...</span>
     </div>
   </div>
 );

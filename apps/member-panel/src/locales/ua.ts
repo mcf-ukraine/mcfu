@@ -35,7 +35,10 @@ export const ua = {
             label: "Email",
             placeholder: "Введіть email",
             errors: {
-              empty: "Будь-ласка введіть email",
+              invalid: {
+                title: "Помилка",
+                message: "Неправильний формат email",
+              },
             },
           },
         },
@@ -55,8 +58,12 @@ export const ua = {
 
         errors: {
           emailNotFound: {
-            title: "Помилка при вході!",
-            message: "Будь-ласка, перевірте правильність введення email.",
+            title: "Помилка при вході",
+            message: "Будь-ласка, перевірте правильність введення email",
+          },
+          unknown: {
+            title: "Помилка при вході",
+            message: "Невідома помилка, будь-ласка, спробуйте ще раз",
           },
         },
       },
@@ -87,9 +94,38 @@ export const ua = {
         checkName: "Перевірити",
 
         notifications: {
-          nameChecked: "Ім'я та прізвище знайдено у базі.",
-          nameCheckFailed: "Ім'я та прізвище не знайдено.",
+          nameIsRequired: {
+            title: "Помилка",
+            message: "Будь-ласка, введіть ім'я та прізвище",
+          },
+          nameExists: {
+            title: "Перевірка імені",
+            message:
+              "Ваше ім'я та прізвище знайдено у системі, ми заповнимо за вас частину інформації для реєстрації",
+          },
+          nameDoesntExist: {
+            title: "Даних не знайдено",
+            message: "Ім'я та прізвище не знайдено у системі",
+          },
+          accountExists: {
+            title: "Перевірка імені",
+            message: "Ви вже зареєстровані в системі",
+          },
+          redirectingToRegistrationForm: {
+            title: "Перенаправлення",
+            message:
+              "Будь-ласка, зачекайте, вас буде перенаправлено на сторінку реєстрації...",
+          },
+          redirectingToLoginPage: {
+            title: "Перенаправлення",
+            message:
+              "Будь-ласка, зачекайте, вас буде перенаправлено на сторінку входу...",
+          },
         },
+      },
+
+      registrationForm: {
+        description: "Будь-ласка, заповніть форму реєстрації",
       },
     },
     verifyEmail: {

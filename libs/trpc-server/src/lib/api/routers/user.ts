@@ -12,7 +12,7 @@ export const userRouter = createTRPCRouter({
   check: publicProcedure
     .input(z.object({ firstName: z.string(), lastName: z.string() }))
     .query(async ({ input }) => ({
-      isRegistered: await checkUser(input),
+      status: await checkUser(input),
     })),
 
   me: protectedProcedure.query(({ ctx }) => getUser(ctx.auth.userId)),

@@ -60,11 +60,13 @@ export const checkUser = async ({ firstName, lastName }: CheckUserInput) => {
     },
   });
 
-  console.log(user);
-
-  if (!user) {
-    return false;
+  if (user?.isMembershipActive) {
+    return "active_member" as const;
   }
 
-  return true;
+  if (user?.isMembershipActive === false) {
+    return "inactive_member" as const;
+  }
+
+  return "not_member" as const;
 };
