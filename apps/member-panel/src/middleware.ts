@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { authMiddleware } from "@clerk/nextjs/server";
-import { publicPages } from "./constants/publicPages";
+import { publicRoutes } from "./constants/publicRoutes";
 
 export default authMiddleware({
   afterAuth(auth, request) {
@@ -12,7 +12,7 @@ export default authMiddleware({
     }
   },
 
-  publicRoutes: publicPages,
+  publicRoutes,
 });
 
 // Stop Middleware running on static files and public folder

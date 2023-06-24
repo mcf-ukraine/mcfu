@@ -47,3 +47,24 @@ export const getUser = async (userId: string) => {
 };
 
 export type User = Prisma.PromiseReturnType<typeof getUser>;
+
+type CheckUserInput = {
+  firstName?: string;
+  lastName?: string;
+};
+export const checkUser = async ({ firstName, lastName }: CheckUserInput) => {
+  const user = await prisma.user.findFirst({
+    where: {
+      firstName,
+      lastName,
+    },
+  });
+
+  console.log(user);
+
+  if (!user) {
+    return false;
+  }
+
+  return true;
+};

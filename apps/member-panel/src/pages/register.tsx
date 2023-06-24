@@ -1,4 +1,6 @@
 import Head from "next/head";
+import { LogoAndTitle } from "../components/LogoAndTitle/LogoAndTitle";
+import { RegistrationForm } from "../components/RegistrationForm/RegistrationForm";
 import { ua } from "../locales/ua";
 import { withHomeRedirect } from "../utils/withHomeRedirect";
 
@@ -7,10 +9,18 @@ export const getServerSideProps = withHomeRedirect;
 const Register = () => (
   <>
     <Head>
-      <title>{ua.pages.register.titleTag}</title>
+      <title>{ua.pages.register.meta.title}</title>
+      <meta
+        name="description"
+        content={ua.pages.register.meta.description}
+        key="desc"
+      />
     </Head>
-    <div className="flex min-h-screen flex-col items-center justify-center">
-      <h1>{ua.pages.register.content.title}</h1>
+    <div className="flex min-h-full flex-col justify-center px-4 pb-20 pt-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <LogoAndTitle />
+      </div>
+      <RegistrationForm />
     </div>
   </>
 );

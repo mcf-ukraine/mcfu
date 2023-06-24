@@ -11,7 +11,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@mcfu/ui";
-import { publicPages } from "../constants/publicPages";
+import { publicRoutes } from "../constants/publicRoutes";
 import { api } from "../utils/trpc";
 import "../styles/styles.css";
 
@@ -25,7 +25,7 @@ const inter = Inter({
 
 const CustomApp = ({ Component, pageProps }: AppProps) => {
   const { pathname } = useRouter();
-  const isPublicPage = publicPages.includes(pathname);
+  const isPublicPage = publicRoutes.includes(pathname);
 
   return (
     <>
