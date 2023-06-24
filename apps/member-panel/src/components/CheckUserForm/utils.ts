@@ -57,7 +57,6 @@ export const showToastAndRedirect = ({
 
       setTimeout(() => {
         push({ pathname: "/register/form", query });
-        toast.dismiss();
       }, 3000);
 
       break;
@@ -82,7 +81,6 @@ export const showToastAndRedirect = ({
 
       setTimeout(() => {
         push({ pathname: "/register/form", query });
-        toast.dismiss();
       }, 3000);
 
       break;
