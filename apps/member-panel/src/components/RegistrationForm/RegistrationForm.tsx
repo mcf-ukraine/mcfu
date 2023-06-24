@@ -57,7 +57,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
   });
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="mx-auto my-4 max-w-2xl">
       <h1 className="mb-1 mt-6 text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
         {ua.pages.register.content.title}
       </h1>
@@ -69,7 +69,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
             </p>
 
             <div className="mt-5 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-6">
-              <div className="sm:col-span-2">
+              <div className="col-span-6 sm:col-span-2">
                 <label
                   htmlFor="first-name"
                   className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
@@ -89,7 +89,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 </div>
               </div>
 
-              <div className="sm:col-span-2">
+              <div className="col-span-6 sm:col-span-2">
                 <label
                   htmlFor="last-name"
                   className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
@@ -109,7 +109,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 </div>
               </div>
 
-              <div className="sm:col-span-2">
+              <div className="col-span-6 sm:col-span-2">
                 <label
                   htmlFor="middle-name"
                   className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
@@ -129,7 +129,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 </div>
               </div>
 
-              <div className="sm:col-span-4">
+              <div className="col-span-6 sm:col-span-4">
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
@@ -149,7 +149,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 </div>
               </div>
 
-              <div className="sm:col-span-3">
+              <div className="col-span-6 sm:col-span-4">
                 <label
                   htmlFor="birth-date-day"
                   className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
@@ -199,7 +199,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 </div>
               </div>
 
-              <div className="col-start-1 col-end-4">
+              <div className="col-span-6 sm:col-start-1 sm:col-end-4">
                 <label
                   htmlFor="phone"
                   className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
@@ -219,7 +219,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 </div>
               </div>
 
-              <div className="col-start-1 col-end-4">
+              <div className="col-span-6 sm:col-start-1 sm:col-end-4">
                 <label
                   htmlFor="subdivision"
                   className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
@@ -288,7 +288,9 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Button type="submit">Перейти до оплати</Button>
+          <Button type="submit" textSize="md">
+            Перейти до оплати
+          </Button>
         </div>
       </form>
     </div>
