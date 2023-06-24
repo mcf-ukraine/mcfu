@@ -1,8 +1,8 @@
 import Head from "next/head";
-import { LogoAndTitle } from "../components/LogoAndTitle/LogoAndTitle";
-import { RegistrationForm } from "../components/RegistrationForm/RegistrationForm";
-import { ua } from "../locales/ua";
-import { withHomeRedirect } from "../utils/withHomeRedirect";
+import { CheckUserForm } from "../../components/CheckUserForm/CheckUserForm";
+import { LogoAndTitle } from "../../components/LogoAndTitle/LogoAndTitle";
+import { ua } from "../../locales/ua";
+import { withHomeRedirect } from "../../utils/withHomeRedirect";
 
 export const getServerSideProps = withHomeRedirect;
 
@@ -20,7 +20,7 @@ const Register = () => (
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <LogoAndTitle />
       </div>
-      <RegistrationForm />
+      <CheckUserForm />
     </div>
   </>
 );

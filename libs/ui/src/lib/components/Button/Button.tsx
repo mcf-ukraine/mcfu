@@ -1,8 +1,8 @@
-import { type FC } from "react";
+import { type FC, type MouseEventHandler } from "react";
 import clsx from "clsx";
 
 const baseClassName =
-  "rounded-md px-3 py-2 text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all";
+  "relative rounded-md px-3 py-2 font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all";
 
 const variants = {
   primary:
@@ -13,16 +13,36 @@ const variants = {
 } as const;
 
 export type ButtonProps = {
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLElement>;
   variant?: keyof typeof variants;
+  disabled?: boolean;
+  block?: boolean;
+  type?: "button" | "submit" | "reset";
+  textSize?: "sm" | "md" | "lg";
   children: React.ReactNode;
 };
 
-export const Button: FC<ButtonProps> = ({ onClick, variant, children }) => (
+export const Button: FC<ButtonProps> = ({
+  onClick,
+  variant,
+  disabled,
+  block,
+  type = "button",
+  textSize = "sm",
+  children,
+}) => (
   <button
-    type="button"
-    className={clsx(baseClassName, variants[variant ?? "primary"])}
+    type={type}
+    className={clsx(
+      baseClassName,
+      variants[variant ?? "primary"],
+      block && "w-full",
+      disabled &&
+        "cursor-not-allowed bg-gray-400 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-600",
+      textSize && `text-${textSize}`
+    )}
     onClick={onClick}
+    disabled={disabled}
   >
     {children}
   </button>

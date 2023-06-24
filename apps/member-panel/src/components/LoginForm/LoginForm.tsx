@@ -6,12 +6,15 @@ import { type OAuthStrategy } from "@clerk/nextjs/dist/types/server";
 import { type SignInResource } from "@clerk/types/dist/signIn";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import { log } from "next-axiom";
-import { Spinner, toast } from "@mcfu/ui";
+import { z } from "zod";
+import { Button, Spinner, toast } from "@mcfu/ui";
 import { env } from "../../env.mjs";
 import { ua } from "../../locales/ua";
 import { isSignInError } from "../../utils/clerk";
 import { LoginFacebookButton } from "../LoginFacebookButton/LoginFacebookButton";
 import { LoginGoogleButton } from "../LoginGoogleButton/LoginGoogleButton";
+
+const emailSchema = z.string().email();
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -30,12 +33,14 @@ export const LoginForm = () => {
     });
 
   const handleInvalid = (e: FormEvent<HTMLInputElement>) => {
-    e.currentTarget.setCustomValidity(
-      ua.pages.login.form.fields.email.errors.empty
-    );
-  };
-  const handleInput = (e: FormEvent<HTMLInputElement>) => {
-    e.currentTarget.setCustomValidity("");
+    e.preventDefault();
+
+    if (!emailSchema.safeParse(email).success) {
+      toast.error({
+        title: ua.pages.login.form.fields.email.errors.invalid.title,
+        message: ua.pages.login.form.fields.email.errors.invalid.message,
+      });
+    }
   };
 
   const onSubmit = async (e: FormEvent) => {
@@ -63,9 +68,18 @@ export const LoginForm = () => {
               title: ua.pages.login.form.errors.emailNotFound.title,
               message: ua.pages.login.form.errors.emailNotFound.message,
             });
+          } else {
+            toast.error({
+              title: ua.pages.login.form.errors.unknown.title,
+              message: ua.pages.login.form.errors.unknown.message,
+            });
           }
         } else {
           log.error(e);
+          toast.error({
+            title: ua.pages.login.form.errors.unknown.title,
+            message: ua.pages.login.form.errors.unknown.message,
+          });
         }
         setLoading(false);
         setVerifying(false);
@@ -170,17 +184,13 @@ export const LoginForm = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 onInvalid={handleInvalid}
-                onInput={handleInput}
                 className="text-md block w-full rounded-md border-0 border-gray-300 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:ring-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:leading-6"
               />
             </div>
           </div>
 
           <div>
-            <button
-              type="submit"
-              className="text-md relative flex w-full justify-center rounded-md bg-sky-600 px-3 py-2 font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
-            >
+            <Button type="submit" block textSize="md">
               {ua.pages.login.form.submit}
               {loading && (
                 <Spinner
@@ -189,7 +199,7 @@ export const LoginForm = () => {
                   darkColor="text-gray-200"
                 />
               )}
-            </button>
+            </Button>
           </div>
 
           {verifying && (
