@@ -1,8 +1,10 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import superjson from "superjson";
 import { appRouter } from "@mcfu/trpc-server";
+import { toast } from "@mcfu/ui";
 import { LogoAndTitle } from "../../components/LogoAndTitle/LogoAndTitle";
 import { RegistrationForm } from "../../components/RegistrationForm/RegistrationForm";
 import { ua } from "../../locales/ua";
@@ -28,6 +30,10 @@ export const getStaticProps = async () => {
 
 const RegisterForm = () => {
   const { query } = useRouter();
+
+  useEffect(() => {
+    toast.dismiss();
+  }, []);
 
   return (
     <>
