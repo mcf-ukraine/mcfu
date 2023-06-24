@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { type FormEvent, useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
@@ -214,6 +215,16 @@ export const LoginForm = () => {
           )}
         </form>
       </div>
+
+      <p className="mt-5 text-center text-sm text-gray-500 dark:text-gray-400">
+        {ua.pages.login.form.register.title}{" "}
+        <Link
+          href={"/register"}
+          className="font-semibold leading-6 text-sky-600 hover:text-sky-500 dark:text-sky-400 dark:hover:text-sky-300"
+        >
+          {ua.pages.login.form.register.link}
+        </Link>
+      </p>
     </div>
   );
 };
