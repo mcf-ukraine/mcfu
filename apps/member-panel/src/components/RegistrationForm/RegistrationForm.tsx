@@ -332,20 +332,20 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                     </dd>
                   </div>
                   <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
-                    <dt className="flex text-sm text-gray-600 dark:text-gray-300">
-                      <span>Внесок {selectedSubdivision?.name}</span>
-                      <span className="group relative ml-2 w-max flex-shrink-0 cursor-pointer text-gray-400 hover:text-gray-500">
+                    <dt className="text-sm text-gray-600 dark:text-gray-300">
+                      Внесок {selectedSubdivision?.name}{" "}
+                      <span className="group relative inline-block cursor-pointer align-middle text-gray-400 hover:text-gray-500">
                         <QuestionMarkCircleIcon
                           className="h-5 w-5"
                           aria-hidden="true"
                         />
-                        <span className="pointer-events-none absolute -left-[8rem] -top-[5.5rem] w-max max-w-xs rounded-md bg-gray-700 px-4 py-3 text-sm text-white opacity-0 transition-opacity group-hover:opacity-100 dark:bg-slate-700 sm:-top-[5rem] sm:left-5">
+                        <span className="pointer-events-none absolute -left-[5rem] -top-[5.5rem] w-max max-w-xs rounded-md bg-gray-700 px-4 py-3 text-sm text-white opacity-0 transition-opacity group-hover:opacity-100 dark:bg-slate-700 sm:-top-[5rem] sm:left-5">
                           Внесок підрозділу (ВП) - кожен підрозділ має власний
                           розмір внеску, оплачується щорічно
                         </span>
                       </span>
                     </dt>
-                    <dd className="text-sm font-medium text-gray-900 dark:text-gray-300">
+                    <dd className="min-w-fit text-sm font-medium text-gray-900 dark:text-gray-300">
                       {selectedSubdivisionFeeAmount} ₴
                     </dd>
                   </div>
