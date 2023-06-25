@@ -1,6 +1,8 @@
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { type SubmitHandler, useForm } from "react-hook-form";
+import { Tooltip } from "react-tooltip";
 import { Button, InfoBox } from "@mcfu/ui";
+import styles from "./RegistrationForm.module.css";
 import { TextField } from "./TextField";
 import { ua } from "../../locales/ua";
 import { api } from "../../utils/trpc";
@@ -286,64 +288,76 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
               <div className="col-span-6 rounded-lg bg-gray-100 px-4 py-6 dark:border dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:p-8">
                 <dl className="mt-2 space-y-4">
                   <div className="flex items-center justify-between">
-                    <dt className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                      <span>
-                        {
-                          ua.pages.register.registrationForm.payment
-                            .registrationFee.title
-                        }
-                      </span>
-                      <span className="group relative ml-2 w-max flex-shrink-0 cursor-pointer text-gray-400 hover:text-gray-500">
+                    <dt className="mcfu-tooltip-container text-sm text-gray-600 dark:text-gray-300">
+                      {
+                        ua.pages.register.registrationForm.payment
+                          .registrationFee.title
+                      }{" "}
+                      <span
+                        className="group relative inline-block cursor-pointer align-middle text-gray-400 hover:text-gray-500"
+                        data-tooltip-id="registration-fee-tooltip"
+                      >
                         <QuestionMarkCircleIcon
                           className="h-5 w-5"
                           aria-hidden="true"
                         />
-                        <span className="pointer-events-none absolute -left-[8rem] -top-[3.75rem] w-max rounded-md bg-gray-700 px-3 py-2 text-sm text-white opacity-0 transition-opacity group-hover:opacity-100 dark:bg-slate-700 sm:-top-[3.25rem] sm:left-5">
-                          Вступний внесок ФАіСУ - 250 грн, <br />
-                          оплачується одноразово
-                        </span>
                       </span>
+                      <Tooltip
+                        id="registration-fee-tooltip"
+                        className={styles.tooltip}
+                      >
+                        Вступний внесок ФАіСУ - 250 грн, оплачується одноразово
+                      </Tooltip>
                     </dt>
                     <dd className="text-sm font-medium text-gray-900 dark:text-gray-300">
                       250 ₴
                     </dd>
                   </div>
                   <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
-                    <dt className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                      <span>
-                        {
-                          ua.pages.register.registrationForm.payment
-                            .membershipFee.title
-                        }
-                      </span>
-                      <span className="group relative ml-2 w-max flex-shrink-0 cursor-pointer text-gray-400 hover:text-gray-500">
+                    <dt className="mcfu-tooltip-container text-sm text-gray-600 dark:text-gray-300">
+                      {
+                        ua.pages.register.registrationForm.payment.membershipFee
+                          .title
+                      }{" "}
+                      <span
+                        className="group relative inline-block cursor-pointer align-middle text-gray-400 hover:text-gray-500"
+                        data-tooltip-id="membership-fee-tooltip"
+                      >
                         <QuestionMarkCircleIcon
                           className="h-5 w-5"
                           aria-hidden="true"
                         />
-                        <span className="pointer-events-none absolute -left-[8rem] -top-[3.75rem] w-max rounded-md bg-gray-700 px-3 py-2 text-sm text-white opacity-0 transition-opacity group-hover:opacity-100 dark:bg-slate-700 sm:-top-[3.25rem] sm:left-5">
-                          Членський внесок ФАіСУ - 250 грн, <br />
-                          оплачується щорічно
-                        </span>
                       </span>
+                      <Tooltip
+                        id="membership-fee-tooltip"
+                        className={styles.tooltip}
+                      >
+                        Членський внесок ФАіСУ - 250 грн, оплачується щорічно
+                      </Tooltip>
                     </dt>
                     <dd className="text-sm font-medium text-gray-900 dark:text-gray-300">
                       250 ₴
                     </dd>
                   </div>
                   <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
-                    <dt className="text-sm text-gray-600 dark:text-gray-300">
+                    <dt className="mcfu-tooltip-container text-sm text-gray-600 dark:text-gray-300">
                       Внесок {selectedSubdivision?.name}{" "}
-                      <span className="group relative inline-block cursor-pointer align-middle text-gray-400 hover:text-gray-500">
+                      <span
+                        className="group relative inline-block cursor-pointer align-middle text-gray-400 hover:text-gray-500"
+                        data-tooltip-id="subdivision-fee-tooltip"
+                      >
                         <QuestionMarkCircleIcon
                           className="h-5 w-5"
                           aria-hidden="true"
                         />
-                        <span className="pointer-events-none absolute -left-[5rem] -top-[5.5rem] w-max max-w-xs rounded-md bg-gray-700 px-4 py-3 text-sm text-white opacity-0 transition-opacity group-hover:opacity-100 dark:bg-slate-700 sm:-top-[5rem] sm:left-5">
-                          Внесок підрозділу (ВП) - кожен підрозділ має власний
-                          розмір внеску, оплачується щорічно
-                        </span>
                       </span>
+                      <Tooltip
+                        id="subdivision-fee-tooltip"
+                        className={styles.tooltip}
+                      >
+                        Внесок підрозділу (ВП) - кожен підрозділ має власний
+                        розмір внеску, оплачується щорічно
+                      </Tooltip>
                     </dt>
                     <dd className="min-w-fit text-sm font-medium text-gray-900 dark:text-gray-300">
                       {selectedSubdivisionFeeAmount} ₴
