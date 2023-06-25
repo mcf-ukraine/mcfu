@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { type MouseEvent, useEffect, useState } from "react";
-import { InformationCircleIcon } from "@heroicons/react/24/solid";
-import { Button, Spinner, toast } from "@mcfu/ui";
+import { Button, InfoBox, Spinner, toast } from "@mcfu/ui";
 import { showToastAndRedirect } from "./utils";
 import { ua } from "../../locales/ua";
 import { api } from "../../utils/trpc";
@@ -55,23 +54,7 @@ export const CheckUserForm = () => {
   return (
     <div className="relative mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div className="rounded-md bg-white px-4 pb-8 pt-6 shadow dark:bg-slate-800 sm:rounded-lg sm:px-10 md:pb-10 md:pt-8">
-        <div>
-          <div className="mt-2 rounded-md bg-blue-50 p-4 dark:bg-slate-700">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <InformationCircleIcon
-                  className="h-5 w-5 text-blue-400 dark:text-sky-500"
-                  aria-hidden="true"
-                />
-              </div>
-              <div className="ml-3 flex-1 md:flex md:justify-between">
-                <p className="text-sm text-sky-700 dark:text-gray-300">
-                  {ua.pages.register.form.content.nameCheckingInfo}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <InfoBox content={ua.pages.register.form.content.nameCheckingInfo} />
 
         <form className="mt-5 space-y-6">
           <div>
