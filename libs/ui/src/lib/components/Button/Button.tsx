@@ -2,7 +2,7 @@ import { type FC, type MouseEventHandler } from "react";
 import clsx from "clsx";
 
 const baseClassName =
-  "relative rounded-md px-3 py-2 font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all";
+  "relative rounded-md px-3 py-2 font-medium shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all";
 
 const variants = {
   primary:

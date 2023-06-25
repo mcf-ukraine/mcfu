@@ -27,7 +27,7 @@ export const ua = {
         content: {
           or: "або",
           socialLoginInfo:
-            "Акаунти соціальних мереж - швидкий та безпечний спосіб входу в систему.",
+            "Акаунти соціальних мереж - швидкий та безпечний спосіб входу в систему",
         },
 
         fields: {
@@ -82,7 +82,7 @@ export const ua = {
       form: {
         content: {
           nameCheckingInfo:
-            "Введіть своє ім'я та прізвище (наприклад: Тарас Шевченко), щоб ми могли перевірити чи ви вже зареєстровані в системі.",
+            "Введіть своє ім'я та прізвище (наприклад: Тарас Шевченко), щоб ми могли перевірити чи ви вже зареєстровані в системі",
         },
 
         fields: {
@@ -126,6 +126,54 @@ export const ua = {
 
       registrationForm: {
         description: "Будь-ласка, заповніть форму реєстрації",
+
+        fields: {
+          firstName: {
+            label: "Ім'я",
+            placeholder: "Тарас",
+          },
+          lastName: {
+            label: "Прізвище",
+            placeholder: "Шевченко",
+          },
+          middleName: {
+            label: "По батькові",
+            placeholder: "Григорович",
+          },
+          email: {
+            label: "Email",
+            placeholder: "taras.shevchenko@ukraine.com",
+          },
+          phone: {
+            label: "Телефон",
+            placeholder: "+380 00 000 00 00",
+          },
+        },
+
+        subdivisionNotInTheList: {
+          description:
+            "Вашого підрозділу немає у списку? Це означає, що він не підтримує оплату онлайн. Вам необхідно звернутись безпосередньо до підрозділу:",
+          linkText: "Контакти",
+          link: "http://fais.org.ua/index.php?do=page&name=divisions",
+        },
+
+        activityTypes: {
+          title: "Активності",
+          description:
+            "Виберіть активності, якими ви плануєте займатись у рамках членства ФАіСУ",
+        },
+
+        payment: {
+          registrationFee: {
+            title: "Вступний внесок ФАіСУ",
+          },
+          membershipFee: {
+            title: "Членський внесок ФАіСУ",
+          },
+          total: "Сума внесків",
+        },
+
+        submit: "Перейти до оплати",
       },
     },
     verifyEmail: {

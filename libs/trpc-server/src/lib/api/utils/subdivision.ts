@@ -5,8 +5,10 @@ export const getAllSubdivisions = async () => {
     select: {
       id: true,
       name: true,
-      acceptsOnlinePayments: true,
       feeAmount: true,
+    },
+    where: {
+      acceptsOnlinePayments: true,
     },
   });
 

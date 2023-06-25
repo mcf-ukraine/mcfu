@@ -1,5 +1,7 @@
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { Button } from "@mcfu/ui";
+import { Button, InfoBox } from "@mcfu/ui";
+import { TextField } from "./TextField";
 import { ua } from "../../locales/ua";
 import { api } from "../../utils/trpc";
 
@@ -24,7 +26,7 @@ const years = Array.from(
   (_, i) => new Date().getFullYear() - MIN_AGE - i
 );
 
-type FormInputs = {
+export type RegistrationFormInputs = {
   firstName: string;
   lastName: string;
   middleName: string;
@@ -38,19 +40,25 @@ type FormInputs = {
 };
 
 type RegistrationFormProps = {
-  defaultValues: Partial<FormInputs>;
+  defaultValues: Partial<RegistrationFormInputs>;
 };
 
 export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
-  const { register, handleSubmit } = useForm<FormInputs>({
-    defaultValues: { ...defaultValues, phone: "+380" },
+  const { register, handleSubmit, watch } = useForm<RegistrationFormInputs>({
+    defaultValues: { ...defaultValues, phone: "+380", subdivision: "1" },
   });
-  const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<RegistrationFormInputs> = (data) =>
+    console.log(data);
 
   const { data: subdivisions } = api.subdivision.getAll.useQuery(undefined, {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
+  const selectedSubdivisionId = watch("subdivision");
+  const selectedSubdivision = subdivisions.find(
+    (s) => `${s.id}` === selectedSubdivisionId
+  );
+  const selectedSubdivisionFeeAmount = selectedSubdivision?.feeAmount || 0;
   const { data: activityTypes } = api.activityType.getAll.useQuery(undefined, {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -63,91 +71,61 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
       </h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-6">
-          <div className="border-b border-gray-900/10 pb-8 dark:border-white/10">
+          <div className="border-b border-gray-900/10 pb-6 dark:border-white/10">
             <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
               {ua.pages.register.registrationForm.description}
             </p>
 
             <div className="mt-5 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-6">
-              <div className="col-span-6 sm:col-span-2">
-                <label
-                  htmlFor="first-name"
-                  className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
-                >
-                  Ім&apos;я
-                </label>
-                <div className="mt-1">
-                  <input
-                    type="text"
-                    name="first-name"
-                    id="first-name"
-                    autoComplete="given-name"
-                    placeholder="Тарас"
-                    {...register("firstName")}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 dark:bg-white/5 dark:text-white dark:ring-white/10 dark:placeholder:text-gray-500 dark:focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
+              <TextField
+                containerClassName="col-span-6 sm:col-span-2"
+                fieldName="firstName"
+                label={
+                  ua.pages.register.registrationForm.fields.firstName.label
+                }
+                placeholder={
+                  ua.pages.register.registrationForm.fields.firstName
+                    .placeholder
+                }
+                autoComplete="given-name"
+                register={register}
+              />
 
-              <div className="col-span-6 sm:col-span-2">
-                <label
-                  htmlFor="last-name"
-                  className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
-                >
-                  Прізвище
-                </label>
-                <div className="mt-1">
-                  <input
-                    type="text"
-                    name="last-name"
-                    id="last-name"
-                    autoComplete="family-name"
-                    placeholder="Шевченко"
-                    {...register("lastName")}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 dark:bg-white/5 dark:text-white dark:ring-white/10 dark:placeholder:text-gray-500 dark:focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
+              <TextField
+                containerClassName="col-span-6 sm:col-span-2"
+                fieldName="lastName"
+                label={ua.pages.register.registrationForm.fields.lastName.label}
+                placeholder={
+                  ua.pages.register.registrationForm.fields.lastName.placeholder
+                }
+                autoComplete="family-name"
+                register={register}
+              />
 
-              <div className="col-span-6 sm:col-span-2">
-                <label
-                  htmlFor="middle-name"
-                  className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
-                >
-                  По батькові
-                </label>
-                <div className="mt-1">
-                  <input
-                    type="text"
-                    name="middle-name"
-                    id="middle-name"
-                    autoComplete="middle-name"
-                    placeholder="Григорович"
-                    {...register("middleName")}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 dark:bg-white/5 dark:text-white dark:ring-white/10 dark:placeholder:text-gray-500 dark:focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
+              <TextField
+                containerClassName="col-span-6 sm:col-span-2"
+                fieldName="middleName"
+                label={
+                  ua.pages.register.registrationForm.fields.middleName.label
+                }
+                placeholder={
+                  ua.pages.register.registrationForm.fields.middleName
+                    .placeholder
+                }
+                autoComplete="middle-name"
+                register={register}
+              />
 
-              <div className="col-span-6 sm:col-span-4">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
-                >
-                  Email
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    placeholder="taras.shevchenko@ukraine.com"
-                    {...register("email")}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 dark:bg-white/5 dark:text-white dark:ring-white/10 dark:placeholder:text-gray-500 dark:focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
+              <TextField
+                containerClassName="col-span-6 sm:col-span-4"
+                fieldName="email"
+                label={ua.pages.register.registrationForm.fields.email.label}
+                placeholder={
+                  ua.pages.register.registrationForm.fields.email.placeholder
+                }
+                autoComplete="email"
+                register={register}
+              />
 
               <div className="col-span-6 sm:col-span-4">
                 <label
@@ -199,25 +177,17 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 </div>
               </div>
 
-              <div className="col-span-6 sm:col-start-1 sm:col-end-4">
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
-                >
-                  Телефон
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    autoComplete="tel"
-                    placeholder="+38 050 123 45 67"
-                    {...register("phone")}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 dark:bg-white/5 dark:text-white dark:ring-white/10 dark:placeholder:text-gray-500 dark:focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
+              <TextField
+                containerClassName="col-span-6 sm:col-start-1 sm:col-end-4"
+                type="tel"
+                fieldName="phone"
+                label={ua.pages.register.registrationForm.fields.phone.label}
+                placeholder={
+                  ua.pages.register.registrationForm.fields.phone.placeholder
+                }
+                autoComplete="tel"
+                register={register}
+              />
 
               <div className="col-span-6 sm:col-start-1 sm:col-end-4">
                 <label
@@ -241,16 +211,41 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                   </select>
                 </div>
               </div>
+
+              <div className="col-span-6">
+                <InfoBox
+                  content={
+                    <>
+                      {
+                        ua.pages.register.registrationForm
+                          .subdivisionNotInTheList.description
+                      }{" "}
+                      <a
+                        className="font-semibold leading-6 text-sky-700 hover:text-sky-600 dark:text-sky-400 dark:hover:text-sky-300"
+                        href={
+                          ua.pages.register.registrationForm
+                            .subdivisionNotInTheList.link
+                        }
+                      >
+                        {
+                          ua.pages.register.registrationForm
+                            .subdivisionNotInTheList.linkText
+                        }
+                      </a>
+                    </>
+                  }
+                  noMargin
+                />
+              </div>
             </div>
           </div>
 
-          <div className="border-b border-gray-900/10 pb-12 dark:border-white/10">
-            <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
-              Активності
+          <div className="pb-2">
+            <h2 className="mb-2 text-base font-semibold leading-4 text-gray-900 dark:text-white">
+              {ua.pages.register.registrationForm.activityTypes.title}
             </h2>
             <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
-              Виберіть активності, якими ви плануєте займатись у рамках членства
-              ФАіСУ
+              {ua.pages.register.registrationForm.activityTypes.description}
             </p>
 
             <div>
@@ -268,10 +263,10 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                           type="checkbox"
                           value={id}
                           {...register("activityTypes")}
-                          className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-600 dark:border-white/10 dark:bg-white/5 dark:text-sky-600 dark:focus:ring-sky-600 dark:focus:ring-offset-gray-900"
+                          className="h-6 w-6 rounded border-gray-300 text-sky-600 focus:ring-sky-600 dark:border-white/10 dark:bg-white/5 dark:text-sky-600 dark:focus:ring-sky-600 dark:focus:ring-offset-gray-900 sm:h-4 sm:w-4"
                         />
                       </div>
-                      <div className="ml-3 text-sm leading-6">
+                      <div className="pl-2 text-sm leading-6">
                         <label
                           htmlFor={`activity-type-${id}`}
                           className="text-gray-900 dark:text-gray-200"
@@ -285,12 +280,93 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
               </fieldset>
             </div>
           </div>
-        </div>
 
-        <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Button type="submit" textSize="md">
-            Перейти до оплати
-          </Button>
+          <div className="pb-6">
+            <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-6">
+              <div className="col-span-6 rounded-lg bg-gray-100 px-4 py-6 dark:border dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:p-8">
+                <dl className="mt-2 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <dt className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                      <span>
+                        {
+                          ua.pages.register.registrationForm.payment
+                            .registrationFee.title
+                        }
+                      </span>
+                      <span className="group relative ml-2 w-max flex-shrink-0 cursor-pointer text-gray-400 hover:text-gray-500">
+                        <QuestionMarkCircleIcon
+                          className="h-5 w-5"
+                          aria-hidden="true"
+                        />
+                        <span className="pointer-events-none absolute -left-[8rem] -top-[3.75rem] w-max rounded-md bg-gray-700 px-3 py-2 text-sm text-white opacity-0 transition-opacity group-hover:opacity-100 dark:bg-slate-700 sm:-top-[3.25rem] sm:left-5">
+                          Вступний внесок ФАіСУ - 250 грн, <br />
+                          оплачується одноразово
+                        </span>
+                      </span>
+                    </dt>
+                    <dd className="text-sm font-medium text-gray-900 dark:text-gray-300">
+                      250 ₴
+                    </dd>
+                  </div>
+                  <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
+                    <dt className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                      <span>
+                        {
+                          ua.pages.register.registrationForm.payment
+                            .membershipFee.title
+                        }
+                      </span>
+                      <span className="group relative ml-2 w-max flex-shrink-0 cursor-pointer text-gray-400 hover:text-gray-500">
+                        <QuestionMarkCircleIcon
+                          className="h-5 w-5"
+                          aria-hidden="true"
+                        />
+                        <span className="pointer-events-none absolute -left-[8rem] -top-[3.75rem] w-max rounded-md bg-gray-700 px-3 py-2 text-sm text-white opacity-0 transition-opacity group-hover:opacity-100 dark:bg-slate-700 sm:-top-[3.25rem] sm:left-5">
+                          Членський внесок ФАіСУ - 250 грн, <br />
+                          оплачується щорічно
+                        </span>
+                      </span>
+                    </dt>
+                    <dd className="text-sm font-medium text-gray-900 dark:text-gray-300">
+                      250 ₴
+                    </dd>
+                  </div>
+                  <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
+                    <dt className="flex text-sm text-gray-600 dark:text-gray-300">
+                      <span>Внесок {selectedSubdivision?.name}</span>
+                      <span className="group relative ml-2 w-max flex-shrink-0 cursor-pointer text-gray-400 hover:text-gray-500">
+                        <QuestionMarkCircleIcon
+                          className="h-5 w-5"
+                          aria-hidden="true"
+                        />
+                        <span className="pointer-events-none absolute -left-[8rem] -top-[5.5rem] w-max max-w-xs rounded-md bg-gray-700 px-4 py-3 text-sm text-white opacity-0 transition-opacity group-hover:opacity-100 dark:bg-slate-700 sm:-top-[5rem] sm:left-5">
+                          Внесок підрозділу (ВП) - кожен підрозділ має власний
+                          розмір внеску, оплачується щорічно
+                        </span>
+                      </span>
+                    </dt>
+                    <dd className="text-sm font-medium text-gray-900 dark:text-gray-300">
+                      {selectedSubdivisionFeeAmount} ₴
+                    </dd>
+                  </div>
+                  <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
+                    <dt className="text-base font-medium text-gray-900 dark:text-white">
+                      {ua.pages.register.registrationForm.payment.total}
+                    </dt>
+                    <dd className="text-base font-medium text-gray-900 dark:text-white">
+                      {250 + 250 + selectedSubdivisionFeeAmount} ₴
+                    </dd>
+                  </div>
+                </dl>
+
+                <div className="mt-6">
+                  <Button type="submit" textSize="md" block>
+                    {ua.pages.register.registrationForm.submit}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </form>
     </div>
