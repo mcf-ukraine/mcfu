@@ -1,9 +1,11 @@
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { Tooltip } from "react-tooltip";
 import { Button, InfoBox } from "@mcfu/ui";
-import styles from "./RegistrationForm.module.css";
+import { FeeTitle } from "./FeeTitle";
 import { TextField } from "./TextField";
+import {
+  MCFU_MEMBERSHIP_FEE,
+  MCFU_REGISTRATION_FEE,
+} from "../../constants/feeAmounts";
 import { ua } from "../../locales/ua";
 import { api } from "../../utils/trpc";
 
@@ -27,6 +29,11 @@ const years = Array.from(
   { length: 120 },
   (_, i) => new Date().getFullYear() - MIN_AGE - i
 );
+
+const queryOpts = {
+  refetchOnMount: false,
+  refetchOnWindowFocus: false,
+};
 
 export type RegistrationFormInputs = {
   firstName: string;
@@ -52,19 +59,22 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
   const onSubmit: SubmitHandler<RegistrationFormInputs> = (data) =>
     console.log(data);
 
-  const { data: subdivisions } = api.subdivision.getAll.useQuery(undefined, {
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
+  // Subdivisions
+  const { data: subdivisions } = api.subdivision.getAll.useQuery(
+    undefined,
+    queryOpts
+  );
   const selectedSubdivisionId = watch("subdivision");
   const selectedSubdivision = subdivisions.find(
     (s) => `${s.id}` === selectedSubdivisionId
   );
   const selectedSubdivisionFeeAmount = selectedSubdivision?.feeAmount || 0;
-  const { data: activityTypes } = api.activityType.getAll.useQuery(undefined, {
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
+
+  // Activity types
+  const { data: activityTypes } = api.activityType.getAll.useQuery(
+    undefined,
+    queryOpts
+  );
 
   return (
     <div className="mx-auto my-4 max-w-2xl">
@@ -134,7 +144,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                   htmlFor="birth-date-day"
                   className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
                 >
-                  Дата народження
+                  {ua.pages.register.registrationForm.fields.birthDate.label}
                 </label>
                 <div className="mt-1 flex gap-4">
                   <select
@@ -196,7 +206,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                   htmlFor="subdivision"
                   className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
                 >
-                  Підрозділ
+                  {ua.pages.register.registrationForm.fields.subdivision.label}
                 </label>
                 <div className="mt-1">
                   <select
@@ -289,75 +299,50 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 <dl className="mt-2 space-y-4">
                   <div className="flex items-center justify-between">
                     <dt className="mcfu-tooltip-container text-sm text-gray-600 dark:text-gray-300">
-                      {
-                        ua.pages.register.registrationForm.payment
-                          .registrationFee.title
-                      }{" "}
-                      <span
-                        className="group relative inline-block cursor-pointer align-middle text-gray-400 hover:text-gray-500"
-                        data-tooltip-id="registration-fee-tooltip"
-                      >
-                        <QuestionMarkCircleIcon
-                          className="h-5 w-5"
-                          aria-hidden="true"
-                        />
-                      </span>
-                      <Tooltip
-                        id="registration-fee-tooltip"
-                        className={styles.tooltip}
-                      >
-                        Вступний внесок ФАіСУ - 250 грн, оплачується одноразово
-                      </Tooltip>
+                      <FeeTitle
+                        title={
+                          ua.pages.register.registrationForm.payment
+                            .registrationFee.title
+                        }
+                        tooltip={
+                          ua.pages.register.registrationForm.payment
+                            .registrationFee.tooltip
+                        }
+                        tooltipId="registration-fee-tooltip"
+                      />
                     </dt>
                     <dd className="text-sm font-medium text-gray-900 dark:text-gray-300">
-                      250 ₴
+                      {MCFU_REGISTRATION_FEE} ₴
                     </dd>
                   </div>
                   <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
                     <dt className="mcfu-tooltip-container text-sm text-gray-600 dark:text-gray-300">
-                      {
-                        ua.pages.register.registrationForm.payment.membershipFee
-                          .title
-                      }{" "}
-                      <span
-                        className="group relative inline-block cursor-pointer align-middle text-gray-400 hover:text-gray-500"
-                        data-tooltip-id="membership-fee-tooltip"
-                      >
-                        <QuestionMarkCircleIcon
-                          className="h-5 w-5"
-                          aria-hidden="true"
-                        />
-                      </span>
-                      <Tooltip
-                        id="membership-fee-tooltip"
-                        className={styles.tooltip}
-                      >
-                        Членський внесок ФАіСУ - 250 грн, оплачується щорічно
-                      </Tooltip>
+                      <FeeTitle
+                        title={
+                          ua.pages.register.registrationForm.payment
+                            .membershipFee.title
+                        }
+                        tooltip={
+                          ua.pages.register.registrationForm.payment
+                            .membershipFee.tooltip
+                        }
+                        tooltipId="membership-fee-tooltip"
+                      />
                     </dt>
                     <dd className="text-sm font-medium text-gray-900 dark:text-gray-300">
-                      250 ₴
+                      {MCFU_MEMBERSHIP_FEE} ₴
                     </dd>
                   </div>
                   <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
                     <dt className="mcfu-tooltip-container text-sm text-gray-600 dark:text-gray-300">
-                      Внесок {selectedSubdivision?.name}{" "}
-                      <span
-                        className="group relative inline-block cursor-pointer align-middle text-gray-400 hover:text-gray-500"
-                        data-tooltip-id="subdivision-fee-tooltip"
-                      >
-                        <QuestionMarkCircleIcon
-                          className="h-5 w-5"
-                          aria-hidden="true"
-                        />
-                      </span>
-                      <Tooltip
-                        id="subdivision-fee-tooltip"
-                        className={styles.tooltip}
-                      >
-                        Внесок підрозділу (ВП) - кожен підрозділ має власний
-                        розмір внеску, оплачується щорічно
-                      </Tooltip>
+                      <FeeTitle
+                        title={`${ua.pages.register.registrationForm.payment.subdivisionFee.titlePart} ${selectedSubdivision?.name}`}
+                        tooltip={
+                          ua.pages.register.registrationForm.payment
+                            .subdivisionFee.tooltip
+                        }
+                        tooltipId="subdivision-fee-tooltip"
+                      />
                     </dt>
                     <dd className="min-w-fit text-sm font-medium text-gray-900 dark:text-gray-300">
                       {selectedSubdivisionFeeAmount} ₴
@@ -368,7 +353,10 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                       {ua.pages.register.registrationForm.payment.total}
                     </dt>
                     <dd className="text-base font-medium text-gray-900 dark:text-white">
-                      {250 + 250 + selectedSubdivisionFeeAmount} ₴
+                      {MCFU_REGISTRATION_FEE +
+                        MCFU_MEMBERSHIP_FEE +
+                        selectedSubdivisionFeeAmount}{" "}
+                      ₴
                     </dd>
                   </div>
                 </dl>

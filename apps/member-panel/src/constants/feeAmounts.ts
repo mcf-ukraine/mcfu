@@ -1,0 +1,2 @@
+export const MCFU_REGISTRATION_FEE = 250;
+export const MCFU_MEMBERSHIP_FEE = 250;
