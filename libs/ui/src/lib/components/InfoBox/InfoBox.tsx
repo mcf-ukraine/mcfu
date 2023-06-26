@@ -22,7 +22,7 @@ export const InfoBox = ({ content, noMargin }: InfoBoxProps) => (
         />
       </div>
       <div className="ml-3 flex-1 md:flex md:justify-between">
-        <p className="text-sm text-sky-700 dark:text-gray-300">{content}</p>
+        <div className="text-sm text-sky-700 dark:text-gray-300">{content}</div>
       </div>
     </div>
   </div>

@@ -1,7 +1,6 @@
 import { type ReactNode } from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
-import { Tooltip } from "react-tooltip";
-import styles from "./FeeTitle.module.css";
+import { Tooltip } from "@mcfu/ui";
 
 type FeeTitleProps = {
   title: ReactNode;
@@ -18,8 +17,6 @@ export const FeeTitle = ({ title, tooltip, tooltipId }: FeeTitleProps) => (
     >
       <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
     </span>
-    <Tooltip id={tooltipId} className={styles.tooltip}>
-      {tooltip}
-    </Tooltip>
+    <Tooltip id={tooltipId}>{tooltip}</Tooltip>
   </>
 );

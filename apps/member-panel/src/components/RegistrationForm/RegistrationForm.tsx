@@ -189,6 +189,37 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 </div>
               </div>
 
+              <div className="col-span-6 -mt-4">
+                <InfoBox
+                  content={
+                    <>
+                      <span className="inline-block pb-2">
+                        Реєстрація доступна для осіб віком{" "}
+                        <strong>від 14 років</strong>, в залежності від віку
+                        розміри внесків:
+                      </span>
+                      <ul role="list" className="list-disc space-y-1 pl-5">
+                        <li>
+                          повний - 250 грн, особи від 16 до 64 років включно
+                        </li>
+                        <li>
+                          пільговий - 100 грн, особи від 14 до 15 років та від
+                          65 включно
+                        </li>
+                        <li>
+                          якщо в даному календарному році ваша категорія внеску
+                          змінюється, за цей рік ви сплачуєте відповідний внесок
+                          для нової категорії (наприклад, якщо у даному році вам
+                          виповнюється 16, значить внесок за цей рік буде
+                          повним)
+                        </li>
+                      </ul>
+                    </>
+                  }
+                  noMargin
+                />
+              </div>
+
               <TextField
                 containerClassName="col-span-6 sm:col-start-1 sm:col-end-4"
                 type="tel"
@@ -214,7 +245,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                     id="subdivision"
                     name="subdivision"
                     {...register("subdivision")}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-sky-600 dark:bg-white/5 dark:text-white dark:ring-white/10 dark:focus:ring-sky-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-sky-600 dark:bg-white/5 dark:text-white dark:ring-white/10 dark:focus:ring-sky-600 sm:text-sm sm:leading-6"
                   >
                     {subdivisions?.map(({ id, name }) => (
                       <option key={`subdivision-${id}`} value={id}>
@@ -225,7 +256,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 </div>
               </div>
 
-              <div className="col-span-6">
+              <div className="col-span-6 -mt-4">
                 <InfoBox
                   content={
                     <>
@@ -369,12 +400,16 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                   </div>
                 </dl>
 
-                <div className="mt-6">
+                <div className="mcfu-tooltip-container mt-6">
                   <Button
                     type="submit"
                     textSize="md"
                     block
                     disabled={isSubmitted && !isValid}
+                    disabledTooltip={
+                      ua.pages.register.registrationForm.submitDisabledTooltip
+                    }
+                    disabledTooltipId="submit-disabled-tooltip"
                   >
                     {ua.pages.register.registrationForm.submit}
                   </Button>

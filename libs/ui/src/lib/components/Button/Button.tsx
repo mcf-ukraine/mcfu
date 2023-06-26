@@ -1,5 +1,6 @@
-import { type FC, type MouseEventHandler } from "react";
+import { type ReactNode, type FC, type MouseEventHandler } from "react";
 import clsx from "clsx";
+import { Tooltip } from "../Tooltip/Tooltip";
 
 const baseClassName =
   "relative rounded-md px-3 py-2 font-medium shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all";
@@ -16,16 +17,20 @@ export type ButtonProps = {
   onClick?: MouseEventHandler<HTMLElement>;
   variant?: keyof typeof variants;
   disabled?: boolean;
+  disabledTooltip?: ReactNode;
+  disabledTooltipId?: string;
   block?: boolean;
   type?: "button" | "submit" | "reset";
   textSize?: "sm" | "md" | "lg";
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export const Button: FC<ButtonProps> = ({
   onClick,
   variant,
   disabled,
+  disabledTooltip,
+  disabledTooltipId,
   block,
   type = "button",
   textSize = "sm",
@@ -45,5 +50,14 @@ export const Button: FC<ButtonProps> = ({
     disabled={disabled}
   >
     {children}
+    {disabled && !!disabledTooltip && disabledTooltipId && (
+      <>
+        <span
+          className="absolute left-0 top-0 z-10 h-full w-full"
+          data-tooltip-id={disabledTooltipId}
+        />
+        <Tooltip id={disabledTooltipId}>{disabledTooltip}</Tooltip>
+      </>
+    )}
   </button>
 );
