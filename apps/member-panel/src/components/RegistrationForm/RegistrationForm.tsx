@@ -30,7 +30,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isDirty, isValid, isSubmitted },
+    formState: { errors, isValid, isSubmitted },
     setFocus,
   } = useForm<RegistrationFormInputs>({
     mode: "onTouched",
@@ -277,17 +277,17 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                           value={id}
                           {...register("activityTypes")}
                           className={clsx(
-                            "h-6 w-6 rounded border text-sky-600 checked:bg-sky-600 dark:bg-white/5 dark:text-sky-600 dark:checked:bg-sky-600 dark:focus:ring-offset-gray-900 sm:h-4 sm:w-4",
+                            "h-6 w-6 cursor-pointer rounded border text-sky-600 checked:bg-sky-600 dark:bg-white/5 dark:text-sky-600 dark:checked:bg-sky-600 dark:focus:ring-offset-gray-900 sm:h-4 sm:w-4",
                             !errors.activityTypes
                               ? "border-gray-300 focus:ring-sky-600 dark:border-white/10 dark:focus:ring-sky-600"
                               : "border-red-400 focus:ring-red-500 dark:border-red-500/75 dark:focus:ring-red-500"
                           )}
                         />
                       </div>
-                      <div className="pl-2 text-sm leading-6">
+                      <div className="text-sm leading-6">
                         <label
                           htmlFor={`activity-type-${id}`}
-                          className="text-gray-900 dark:text-gray-200"
+                          className="cursor-pointer pl-2 text-gray-900 dark:text-gray-200"
                         >
                           {name}
                         </label>
@@ -374,7 +374,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                     type="submit"
                     textSize="md"
                     block
-                    disabled={(isDirty || isSubmitted) && !isValid}
+                    disabled={isSubmitted && !isValid}
                   >
                     {ua.pages.register.registrationForm.submit}
                   </Button>
