@@ -35,10 +35,10 @@ export const Button: FC<ButtonProps> = ({
     type={type}
     className={clsx(
       baseClassName,
-      variants[variant ?? "primary"],
+      !disabled
+        ? variants[variant ?? "primary"]
+        : "cursor-not-allowed bg-gray-400 text-white hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-600",
       block && "w-full",
-      disabled &&
-        "cursor-not-allowed bg-gray-400 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-600",
       textSize && `text-${textSize}`
     )}
     onClick={onClick}
