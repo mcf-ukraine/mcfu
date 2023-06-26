@@ -280,7 +280,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                             "h-6 w-6 rounded text-sky-600 checked:bg-sky-600 dark:border-white/10 dark:bg-white/5 dark:text-sky-600 dark:checked:bg-sky-600 dark:focus:ring-offset-gray-900 sm:h-4 sm:w-4",
                             !errors.activityTypes
                               ? "border-gray-300 focus:ring-sky-600 dark:border-white/10 dark:focus:ring-sky-600"
-                              : "border-red-400 focus:ring-red-500 dark:border-red-500/75 dark:focus:ring-red-500"
+                              : "border-red-400 focus:ring-red-500 dark:border-red-500 dark:focus:ring-red-500"
                           )}
                         />
                       </div>
