@@ -2,11 +2,8 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { Button, InfoBox } from "@mcfu/ui";
 import { FeeTitle } from "./FeeTitle";
 import { TextField } from "./TextField";
-import {
-  MCFU_MEMBERSHIP_FEE,
-  MCFU_REGISTRATION_FEE,
-} from "../../constants/feeAmounts";
 import { ua } from "../../locales/ua";
+import { getMembershipFee, getRegistrationFee } from "../../utils/fees";
 import { api } from "../../utils/trpc";
 
 const days = Array.from({ length: 31 }, (_, i) => i + 1);
@@ -75,6 +72,16 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
     undefined,
     queryOpts
   );
+
+  const birthDateYear = watch("birthDateYear");
+  // Age that will become actual this year (eg. if you were born on 31.12.2000, you will become 23 in 2023)
+  const yearAge = new Date().getFullYear() - Number(birthDateYear);
+
+  // Fees
+  const registrationFeeAmount = getRegistrationFee(yearAge);
+  const membershipFeeAmount = getMembershipFee(yearAge);
+  const totalFeeAmount =
+    registrationFeeAmount + membershipFeeAmount + selectedSubdivisionFeeAmount;
 
   return (
     <div className="mx-auto my-4 max-w-2xl">
@@ -167,8 +174,8 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                     {...register("birthDateMonth")}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-sky-600 dark:bg-white/5 dark:text-white dark:ring-white/10 dark:focus:ring-sky-600 sm:max-w-xs sm:text-sm sm:leading-6"
                   >
-                    {months.map((month) => (
-                      <option key={`month-${month}`} value={month}>
+                    {months.map((month, i) => (
+                      <option key={`month-${month}`} value={i + 1}>
                         {month}
                       </option>
                     ))}
@@ -312,7 +319,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                       />
                     </dt>
                     <dd className="text-sm font-medium text-gray-900 dark:text-gray-300">
-                      {MCFU_REGISTRATION_FEE} ₴
+                      {`${registrationFeeAmount} ₴`}
                     </dd>
                   </div>
                   <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
@@ -330,7 +337,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                       />
                     </dt>
                     <dd className="text-sm font-medium text-gray-900 dark:text-gray-300">
-                      {MCFU_MEMBERSHIP_FEE} ₴
+                      {`${membershipFeeAmount} ₴`}
                     </dd>
                   </div>
                   <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
@@ -345,7 +352,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                       />
                     </dt>
                     <dd className="min-w-fit text-sm font-medium text-gray-900 dark:text-gray-300">
-                      {selectedSubdivisionFeeAmount} ₴
+                      {`${selectedSubdivisionFeeAmount} ₴`}
                     </dd>
                   </div>
                   <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
@@ -353,10 +360,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                       {ua.pages.register.registrationForm.payment.total}
                     </dt>
                     <dd className="text-base font-medium text-gray-900 dark:text-white">
-                      {MCFU_REGISTRATION_FEE +
-                        MCFU_MEMBERSHIP_FEE +
-                        selectedSubdivisionFeeAmount}{" "}
-                      ₴
+                      {`${totalFeeAmount} ₴`}
                     </dd>
                   </div>
                 </dl>
