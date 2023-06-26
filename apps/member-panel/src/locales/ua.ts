@@ -131,28 +131,36 @@ export const ua = {
           firstName: {
             label: "Ім'я",
             placeholder: "Тарас",
+            error: "Введіть ім'я",
           },
           lastName: {
             label: "Прізвище",
             placeholder: "Шевченко",
+            error: "Введіть прізвище",
           },
           middleName: {
             label: "По батькові",
             placeholder: "Григорович",
+            error: "Введіть по батькові",
           },
           email: {
             label: "Email",
             placeholder: "taras.shevchenko@ukraine.com",
+            error: "Введіть коректний email",
           },
           birthDate: {
             label: "Дата народження",
           },
           phone: {
             label: "Телефон",
-            placeholder: "+380 00 000 00 00",
+            placeholder: "+380501234567",
+            error: "Введіть коректний номер телефону",
           },
           subdivision: {
             label: "Підрозділ",
+          },
+          activityTypes: {
+            error: "Виберіть хоча б один вид активності",
           },
         },
 

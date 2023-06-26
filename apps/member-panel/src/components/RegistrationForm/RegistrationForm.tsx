@@ -1,48 +1,24 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { Button, InfoBox } from "@mcfu/ui";
 import { FeeTitle } from "./FeeTitle";
+import {
+  type RegistrationFormInputs,
+  days,
+  months,
+  registrationFormSchema,
+  setFocusOnFirstErrorField,
+  years,
+} from "./form";
 import { TextField } from "./TextField";
 import { ua } from "../../locales/ua";
 import { getMembershipFee, getRegistrationFee } from "../../utils/fees";
 import { api } from "../../utils/trpc";
 
-const days = Array.from({ length: 31 }, (_, i) => i + 1);
-const months = [
-  "Січня",
-  "Лютого",
-  "Березня",
-  "Квітня",
-  "Травня",
-  "Червня",
-  "Липня",
-  "Серпня",
-  "Вересня",
-  "Жовтня",
-  "Листопада",
-  "Грудня",
-];
-const MIN_AGE = 14;
-const years = Array.from(
-  { length: 120 },
-  (_, i) => new Date().getFullYear() - MIN_AGE - i
-);
-
 const queryOpts = {
   refetchOnMount: false,
   refetchOnWindowFocus: false,
-};
-
-export type RegistrationFormInputs = {
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  email: string;
-  birthDateDay: string;
-  birthDateMonth: string;
-  birthDateYear: string;
-  phone: string;
-  subdivision: string;
-  activityTypes: string[];
 };
 
 type RegistrationFormProps = {
@@ -50,8 +26,17 @@ type RegistrationFormProps = {
 };
 
 export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
-  const { register, handleSubmit, watch } = useForm<RegistrationFormInputs>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isDirty, isValid, isSubmitted },
+    setFocus,
+  } = useForm<RegistrationFormInputs>({
+    mode: "onTouched",
     defaultValues: { ...defaultValues, phone: "+380", subdivision: "1" },
+    resolver: zodResolver(registrationFormSchema),
+    shouldFocusError: false,
   });
   const onSubmit: SubmitHandler<RegistrationFormInputs> = (data) =>
     console.log(data);
@@ -88,14 +73,18 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
       <h1 className="mb-1 mt-6 text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
         {ua.pages.register.content.title}
       </h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit(onSubmit, (errors) => {
+          setFocusOnFirstErrorField(errors, setFocus);
+        })}
+      >
         <div className="space-y-6">
           <div className="border-b border-gray-900/10 pb-6 dark:border-white/10">
             <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
               {ua.pages.register.registrationForm.description}
             </p>
 
-            <div className="mt-5 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-6">
+            <div className="mt-5 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-6">
               <TextField
                 containerClassName="col-span-6 sm:col-span-2"
                 fieldName="firstName"
@@ -108,6 +97,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 }
                 autoComplete="given-name"
                 register={register}
+                error={errors.firstName}
               />
 
               <TextField
@@ -119,6 +109,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 }
                 autoComplete="family-name"
                 register={register}
+                error={errors.lastName}
               />
 
               <TextField
@@ -133,6 +124,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 }
                 autoComplete="middle-name"
                 register={register}
+                error={errors.middleName}
               />
 
               <TextField
@@ -144,6 +136,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 }
                 autoComplete="email"
                 register={register}
+                error={errors.email}
               />
 
               <div className="col-span-6 sm:col-span-4">
@@ -206,6 +199,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 }
                 autoComplete="tel"
                 register={register}
+                error={errors.phone}
               />
 
               <div className="col-span-6 sm:col-start-1 sm:col-end-4">
@@ -267,7 +261,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
               {ua.pages.register.registrationForm.activityTypes.description}
             </p>
 
-            <div>
+            <div className="mb-4">
               <fieldset>
                 <div className="mt-6 space-y-2">
                   {activityTypes?.map(({ id, name }) => (
@@ -282,7 +276,12 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                           type="checkbox"
                           value={id}
                           {...register("activityTypes")}
-                          className="h-6 w-6 rounded border-gray-300 text-sky-600 focus:ring-sky-600 dark:border-white/10 dark:bg-white/5 dark:text-sky-600 dark:focus:ring-sky-600 dark:focus:ring-offset-gray-900 sm:h-4 sm:w-4"
+                          className={clsx(
+                            "h-6 w-6 rounded text-sky-600 checked:bg-sky-600 dark:border-white/10 dark:bg-white/5 dark:text-sky-600 dark:checked:bg-sky-600 dark:focus:ring-offset-gray-900 sm:h-4 sm:w-4",
+                            !errors.activityTypes
+                              ? "border-gray-300 focus:ring-sky-600 dark:border-white/10 dark:focus:ring-sky-600"
+                              : "border-red-400 focus:ring-red-500 dark:border-red-500/75 dark:focus:ring-red-500"
+                          )}
                         />
                       </div>
                       <div className="pl-2 text-sm leading-6">
@@ -297,6 +296,11 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                   ))}
                 </div>
               </fieldset>
+              {!!errors.activityTypes && (
+                <p className="absolute mt-3 text-sm text-red-600 dark:text-red-500">
+                  {errors.activityTypes.message}
+                </p>
+              )}
             </div>
           </div>
 
@@ -366,7 +370,12 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 </dl>
 
                 <div className="mt-6">
-                  <Button type="submit" textSize="md" block>
+                  <Button
+                    type="submit"
+                    textSize="md"
+                    block
+                    disabled={(isDirty || isSubmitted) && !isValid}
+                  >
                     {ua.pages.register.registrationForm.submit}
                   </Button>
                 </div>
