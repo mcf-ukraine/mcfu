@@ -10,7 +10,13 @@ export const userRouter = createTRPCRouter({
     })),
 
   check: publicProcedure
-    .input(z.object({ firstName: z.string(), lastName: z.string() }))
+    .input(
+      z.object({
+        firstName: z.string().optional(),
+        lastName: z.string().optional(),
+        email: z.string().email().optional(),
+      })
+    )
     .query(async ({ input }) => ({
       status: await checkUser(input),
     })),

@@ -1,6 +1,5 @@
 import Head from "next/head";
-import { LoginForm } from "../components";
-import { LogoAndTitle } from "../components/LogoAndTitle/LogoAndTitle";
+import { LoginForm, LogoAndTitle } from "../components";
 import { ua } from "../locales/ua";
 import { withHomeRedirect } from "../utils/withHomeRedirect";
 

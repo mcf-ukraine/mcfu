@@ -1,7 +1,10 @@
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { Button, InfoBox } from "@mcfu/ui";
+import { Button, InfoBox, Spinner } from "@mcfu/ui";
 import { FeeTitle } from "./FeeTitle";
 import {
   type RegistrationFormInputs,
@@ -11,10 +14,12 @@ import {
   setFocusOnFirstErrorField,
   years,
 } from "./form";
-import { TextField } from "./TextField";
 import { ua } from "../../locales/ua";
 import { getMembershipFee, getRegistrationFee } from "../../utils/fees";
+import { capitalize } from "../../utils/helpers";
 import { api } from "../../utils/trpc";
+import { redirectToLoginPageWithToast } from "../CheckUserForm/utils";
+import { TextField } from "../TextField/TextField";
 
 const queryOpts = {
   refetchOnMount: false,
@@ -26,20 +31,32 @@ type RegistrationFormProps = {
 };
 
 export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
+  const { push } = useRouter();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors, isValid, isSubmitted },
     setFocus,
+    setValue,
   } = useForm<RegistrationFormInputs>({
     mode: "onTouched",
     defaultValues: { ...defaultValues, phone: "+380", subdivision: "1" },
     resolver: zodResolver(registrationFormSchema),
     shouldFocusError: false,
   });
-  const onSubmit: SubmitHandler<RegistrationFormInputs> = (data) =>
-    console.log(data);
+
+  // Check email
+  const {
+    isFetching: isCheckingUserByEmail,
+    refetch: checkUser,
+    remove: reset,
+  } = api.user.check.useQuery(
+    {
+      email: watch("email"),
+    },
+    { enabled: false, refetchOnWindowFocus: false }
+  );
 
   // Subdivisions
   const { data: subdivisions } = api.subdivision.getAll.useQuery(
@@ -67,6 +84,20 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
   const membershipFeeAmount = getMembershipFee(yearAge);
   const totalFeeAmount =
     registrationFeeAmount + membershipFeeAmount + selectedSubdivisionFeeAmount;
+
+  const onSubmit: SubmitHandler<RegistrationFormInputs> = async (values) => {
+    console.log(values);
+    // reset();
+    // const { data } = await checkUser();
+
+    // if (data.status === "active_member") {
+    //   redirectToLoginPageWithToast({
+    //     title: ua.pages.register.checkForm.notifications.emailExists.title,
+    //     message: ua.pages.register.checkForm.notifications.emailExists.message,
+    //     push,
+    //   });
+    // }
+  };
 
   return (
     <div className="mx-auto my-4 max-w-2xl">
@@ -97,6 +128,9 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 }
                 autoComplete="given-name"
                 register={register}
+                onBlur={() => {
+                  setValue("firstName", capitalize(watch("firstName")));
+                }}
                 error={errors.firstName}
               />
 
@@ -109,6 +143,9 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 }
                 autoComplete="family-name"
                 register={register}
+                onBlur={() => {
+                  setValue("lastName", capitalize(watch("lastName")));
+                }}
                 error={errors.lastName}
               />
 
@@ -124,6 +161,9 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 }
                 autoComplete="middle-name"
                 register={register}
+                onBlur={() => {
+                  setValue("middleName", capitalize(watch("middleName")));
+                }}
                 error={errors.middleName}
               />
 
@@ -136,7 +176,12 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 }
                 autoComplete="email"
                 register={register}
+                // onBlur={() => {
+                //   reset();
+                //   checkUser();
+                // }}
                 error={errors.email}
+                isLoading={isCheckingUserByEmail}
               />
 
               <div className="col-span-6 sm:col-span-4">
@@ -193,11 +238,13 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 <InfoBox
                   content={
                     <>
-                      <span className="inline-block pb-2">
+                      <p className="pb-2">
                         Реєстрація доступна для осіб віком{" "}
-                        <strong>від 14 років</strong>, в залежності від віку
-                        розміри внесків:
-                      </span>
+                        <strong>від 14 років</strong>,
+                      </p>
+                      <p className="pb-1">
+                        в залежності від віку розміри внесків:
+                      </p>
                       <ul role="list" className="list-disc space-y-1 pl-5">
                         <li>
                           повний - 250 грн, особи від 16 до 64 років включно
@@ -275,6 +322,10 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                           ua.pages.register.registrationForm
                             .subdivisionNotInTheList.linkText
                         }
+                        <ArrowTopRightOnSquareIcon
+                          className="mb-0.5 ml-0.5 inline-block h-4 w-4"
+                          aria-hidden="true"
+                        />
                       </a>
                     </>
                   }
@@ -401,17 +452,15 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 </dl>
 
                 <div className="mcfu-tooltip-container mt-6">
-                  <Button
-                    type="submit"
-                    textSize="md"
-                    block
-                    disabled={isSubmitted && !isValid}
-                    disabledTooltip={
-                      ua.pages.register.registrationForm.submitDisabledTooltip
-                    }
-                    disabledTooltipId="submit-disabled-tooltip"
-                  >
+                  <Button type="submit" textSize="base" block>
                     {ua.pages.register.registrationForm.submit}
+                    {/* {isCheckingUserByEmail && (
+                      <Spinner
+                        className="absolute left-[50%] top-[50%] ml-[3.25rem] mt-[-11px]"
+                        size={5}
+                        darkColor="text-gray-200"
+                      />
+                    )} */}
                   </Button>
                 </div>
               </div>

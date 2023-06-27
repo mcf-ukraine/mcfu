@@ -79,16 +79,20 @@ export const ua = {
         title: "Реєстрація",
       },
 
-      form: {
+      checkForm: {
         content: {
           nameCheckingInfo:
-            "Введіть своє ім'я та прізвище (наприклад: Тарас Шевченко), щоб ми могли перевірити чи ви вже зареєстровані в системі",
+            "Введіть свої ім'я та прізвище (наприклад: Тарас Шевченко), щоб ми могли перевірити чи ви вже зареєстровані в системі",
         },
 
         fields: {
-          name: {
-            label: "Ім'я та прізвище",
-            placeholder: "Введіть ім'я та прізвище",
+          firstName: {
+            label: "Ім'я",
+            placeholder: "Тарас",
+          },
+          lastName: {
+            label: "Прізвище",
+            placeholder: "Шевченко",
           },
         },
         checkName: "Перевірити",
@@ -110,6 +114,10 @@ export const ua = {
           accountExists: {
             title: "Перевірка імені",
             message: "Ви вже зареєстровані в системі",
+          },
+          emailExists: {
+            title: "Перевірка email",
+            message: "Ваш email вже зареєстрований в системі",
           },
           redirectingToRegistrationForm: {
             title: "Перенаправлення",
@@ -157,7 +165,7 @@ export const ua = {
             error: "Введіть коректний номер телефону",
           },
           subdivision: {
-            label: "Підрозділ",
+            label: "Відокремлений підрозділ",
           },
           activityTypes: {
             error: "Виберіть хоча б один вид активності",
@@ -199,7 +207,7 @@ export const ua = {
           total: "Сума до сплати",
         },
 
-        submit: "Перейти до оплати",
+        submit: "Сплатити",
         submitDisabledTooltip: "Будь-ласка, заповніть усі необхідні поля",
       },
     },

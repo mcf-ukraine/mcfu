@@ -2,6 +2,37 @@ import { type NextRouter } from "next/router";
 import { toast } from "@mcfu/ui";
 import { ua } from "../../locales/ua";
 
+export const redirectToLoginPageWithToast = ({
+  title,
+  message,
+  push,
+}: {
+  title: string;
+  message: string;
+  push: NextRouter["push"];
+}) => {
+  toast.success({
+    title,
+    message,
+  });
+
+  setTimeout(() => {
+    toast.loading({
+      title:
+        ua.pages.register.checkForm.notifications.redirectingToLoginPage.title,
+      message:
+        ua.pages.register.checkForm.notifications.redirectingToLoginPage
+          .message,
+      duration: Infinity,
+    });
+  }, 500);
+
+  setTimeout(() => {
+    push("/login");
+    toast.dismiss();
+  }, 3000);
+};
+
 type Status = "active_member" | "inactive_member" | "not_member";
 
 export const showToastAndRedirect = ({
@@ -15,42 +46,29 @@ export const showToastAndRedirect = ({
 }) => {
   switch (status) {
     case "active_member":
-      toast.success({
-        title: ua.pages.register.form.notifications.accountExists.title,
-        message: ua.pages.register.form.notifications.accountExists.message,
+      redirectToLoginPageWithToast({
+        title: ua.pages.register.checkForm.notifications.accountExists.title,
+        message:
+          ua.pages.register.checkForm.notifications.accountExists.message,
+        push,
       });
-
-      setTimeout(() => {
-        toast.loading({
-          title:
-            ua.pages.register.form.notifications.redirectingToLoginPage.title,
-          message:
-            ua.pages.register.form.notifications.redirectingToLoginPage.message,
-          duration: Infinity,
-        });
-      }, 500);
-
-      setTimeout(() => {
-        push("/login");
-        toast.dismiss();
-      }, 3000);
 
       break;
 
     case "inactive_member":
       toast.success({
-        title: ua.pages.register.form.notifications.nameExists.title,
-        message: ua.pages.register.form.notifications.nameExists.message,
+        title: ua.pages.register.checkForm.notifications.nameExists.title,
+        message: ua.pages.register.checkForm.notifications.nameExists.message,
       });
 
       setTimeout(() => {
         toast.loading({
           title:
-            ua.pages.register.form.notifications.redirectingToRegistrationForm
-              .title,
+            ua.pages.register.checkForm.notifications
+              .redirectingToRegistrationForm.title,
           message:
-            ua.pages.register.form.notifications.redirectingToRegistrationForm
-              .message,
+            ua.pages.register.checkForm.notifications
+              .redirectingToRegistrationForm.message,
           duration: Infinity,
         });
       }, 500);
@@ -63,18 +81,19 @@ export const showToastAndRedirect = ({
 
     case "not_member":
       toast.error({
-        title: ua.pages.register.form.notifications.nameDoesntExist.title,
-        message: ua.pages.register.form.notifications.nameDoesntExist.message,
+        title: ua.pages.register.checkForm.notifications.nameDoesntExist.title,
+        message:
+          ua.pages.register.checkForm.notifications.nameDoesntExist.message,
       });
 
       setTimeout(() => {
         toast.loading({
           title:
-            ua.pages.register.form.notifications.redirectingToRegistrationForm
-              .title,
+            ua.pages.register.checkForm.notifications
+              .redirectingToRegistrationForm.title,
           message:
-            ua.pages.register.form.notifications.redirectingToRegistrationForm
-              .message,
+            ua.pages.register.checkForm.notifications
+              .redirectingToRegistrationForm.message,
           duration: Infinity,
         });
       }, 500);
