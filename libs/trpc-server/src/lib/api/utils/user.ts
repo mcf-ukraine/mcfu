@@ -51,13 +51,20 @@ export type User = Prisma.PromiseReturnType<typeof getUser>;
 type CheckUserInput = {
   firstName?: string;
   lastName?: string;
+  email?: string;
 };
-export const checkUser = async ({ firstName, lastName }: CheckUserInput) => {
+export const checkUser = async ({
+  firstName,
+  lastName,
+  email,
+}: CheckUserInput) => {
   const user = await prisma.user.findFirst({
-    where: {
-      firstName,
-      lastName,
-    },
+    where: email
+      ? { email }
+      : {
+          firstName,
+          lastName,
+        },
   });
 
   if (user?.isMembershipActive) {

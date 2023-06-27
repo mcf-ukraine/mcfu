@@ -21,7 +21,7 @@ export type ButtonProps = {
   disabledTooltipId?: string;
   block?: boolean;
   type?: "button" | "submit" | "reset";
-  textSize?: "sm" | "md" | "lg";
+  textSize?: "sm" | "base" | "lg";
   children: ReactNode;
 };
 

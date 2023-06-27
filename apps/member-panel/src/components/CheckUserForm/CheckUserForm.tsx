@@ -3,16 +3,18 @@ import { type MouseEvent, useEffect, useState } from "react";
 import { Button, InfoBox, Spinner, toast } from "@mcfu/ui";
 import { showToastAndRedirect } from "./utils";
 import { ua } from "../../locales/ua";
+import { capitalize } from "../../utils/helpers";
 import { api } from "../../utils/trpc";
+import { TextField } from "../TextField/TextField";
 
 export const CheckUserForm = () => {
   const router = useRouter();
 
-  const [name, setName] = useState("");
-  const { firstName, lastName } = {
-    firstName: name.split(" ")[0],
-    lastName: name.split(" ")[1],
-  };
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
+  const capitalizedFirstName = capitalize(firstName.toLowerCase());
+  const capitalizedLastName = capitalize(lastName.toLowerCase());
 
   const {
     data,
@@ -20,7 +22,10 @@ export const CheckUserForm = () => {
     refetch: checkUser,
     remove: reset,
   } = api.user.check.useQuery(
-    { firstName, lastName },
+    {
+      firstName: capitalizedFirstName,
+      lastName: capitalizedLastName,
+    },
     { enabled: false, refetchOnWindowFocus: false }
   );
 
@@ -29,8 +34,9 @@ export const CheckUserForm = () => {
 
     if (!firstName || !lastName) {
       toast.error({
-        title: ua.pages.register.form.notifications.nameIsRequired.title,
-        message: ua.pages.register.form.notifications.nameIsRequired.message,
+        title: ua.pages.register.checkForm.notifications.nameIsRequired.title,
+        message:
+          ua.pages.register.checkForm.notifications.nameIsRequired.message,
       });
       return;
     }
@@ -45,45 +51,52 @@ export const CheckUserForm = () => {
       showToastAndRedirect({
         status: data.status,
         push: router.push,
-        query: { firstName, lastName },
+        query: {
+          firstName: capitalizedFirstName,
+          lastName: capitalizedLastName,
+        },
       });
       reset();
     }
-  }, [data, router.push, reset, firstName, lastName]);
+  }, [data, router.push, reset, capitalizedFirstName, capitalizedLastName]);
 
   return (
     <div className="relative mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div className="rounded-md bg-white px-4 pb-8 pt-6 shadow dark:bg-slate-800 sm:rounded-lg sm:px-10 md:pb-10 md:pt-8">
-        <InfoBox content={ua.pages.register.form.content.nameCheckingInfo} />
+        <InfoBox
+          content={ua.pages.register.checkForm.content.nameCheckingInfo}
+        />
 
-        <form className="mt-5 space-y-6">
+        <form className="mt-5 space-y-5">
+          <TextField
+            fieldName="firstName"
+            label={ua.pages.register.checkForm.fields.firstName.label}
+            placeholder={
+              ua.pages.register.checkForm.fields.firstName.placeholder
+            }
+            autoComplete="given-name"
+            onChange={(e) => {
+              reset();
+              setFirstName(e.target.value);
+            }}
+            textSize="base"
+          />
+          <TextField
+            fieldName="lastName"
+            label={ua.pages.register.checkForm.fields.lastName.label}
+            placeholder={
+              ua.pages.register.checkForm.fields.lastName.placeholder
+            }
+            autoComplete="family-name"
+            onChange={(e) => {
+              reset();
+              setLastName(e.target.value);
+            }}
+            textSize="base"
+          />
           <div>
-            <label
-              htmlFor="name"
-              className="text-md block font-medium leading-6 text-gray-900 dark:text-white"
-            >
-              {ua.pages.register.form.fields.name.label}
-            </label>
-            <div className="mt-2">
-              <input
-                id="name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                placeholder={ua.pages.register.form.fields.name.placeholder}
-                onChange={(e) => {
-                  reset();
-                  setName(e.target.value);
-                }}
-                required
-                className="text-md block w-full rounded-md border-0 border-gray-300 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:ring-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            <Button onClick={handleCheck} block textSize="md">
-              {ua.pages.register.form.checkName}
+            <Button onClick={handleCheck} block textSize="base">
+              {ua.pages.register.checkForm.checkName}
               {isFetching && (
                 <Spinner
                   className="absolute left-[50%] top-[50%] ml-[3.25rem] mt-[-11px]"

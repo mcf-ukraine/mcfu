@@ -12,7 +12,7 @@ export const FeeTitle = ({ title, tooltip, tooltipId }: FeeTitleProps) => (
   <>
     {title}{" "}
     <span
-      className="group relative inline-block cursor-pointer align-middle text-gray-400 hover:text-gray-500"
+      className="group relative inline-block cursor-pointer align-bottom text-gray-400 hover:text-gray-500"
       data-tooltip-id={tooltipId}
     >
       <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />

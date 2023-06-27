@@ -176,7 +176,7 @@ export const LoginForm = () => {
           </div>
 
           <div>
-            <Button type="submit" block textSize="md">
+            <Button type="submit" block textSize="base">
               {ua.pages.login.form.submit}
               {loading && (
                 <Spinner
