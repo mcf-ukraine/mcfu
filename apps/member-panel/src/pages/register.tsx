@@ -5,8 +5,8 @@ import { createServerSideHelpers } from "@trpc/react-query/server";
 import superjson from "superjson";
 import { appRouter } from "@mcfu/trpc-server";
 import { toast } from "@mcfu/ui";
-import { LogoAndTitle, RegistrationForm } from "../../components";
-import { ua } from "../../locales/ua";
+import { LogoAndTitle, RegistrationForm } from "../components";
+import { ua } from "../locales/ua";
 
 export const getStaticProps = async () => {
   const helpers = createServerSideHelpers({
@@ -27,7 +27,7 @@ export const getStaticProps = async () => {
   };
 };
 
-const RegisterForm = () => {
+const Register = () => {
   const { query } = useRouter();
 
   useEffect(() => {
@@ -54,4 +54,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default Register;

@@ -1,11 +1,11 @@
 import Head from "next/head";
-import { CheckUserForm, LogoAndTitle } from "../../components";
-import { ua } from "../../locales/ua";
-import { withHomeRedirect } from "../../utils/withHomeRedirect";
+import { CheckUserForm, LogoAndTitle } from "../components";
+import { ua } from "../locales/ua";
+import { withHomeRedirect } from "../utils/withHomeRedirect";
 
 export const getServerSideProps = withHomeRedirect;
 
-const Register = () => (
+const CheckUser = () => (
   <>
     <Head>
       <title>{ua.pages.register.meta.title}</title>
@@ -24,4 +24,4 @@ const Register = () => (
   </>
 );
 
-export default Register;
+export default CheckUser;
