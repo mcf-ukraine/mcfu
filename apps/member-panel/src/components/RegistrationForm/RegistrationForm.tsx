@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
@@ -36,7 +35,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid, isSubmitted },
+    formState: { errors },
     setFocus,
     setValue,
   } = useForm<RegistrationFormInputs>({
@@ -64,7 +63,7 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
     queryOpts
   );
   const selectedSubdivisionId = watch("subdivision");
-  const selectedSubdivision = subdivisions.find(
+  const selectedSubdivision = subdivisions?.find(
     (s) => `${s.id}` === selectedSubdivisionId
   );
   const selectedSubdivisionFeeAmount = selectedSubdivision?.feeAmount || 0;
@@ -87,16 +86,16 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
 
   const onSubmit: SubmitHandler<RegistrationFormInputs> = async (values) => {
     console.log(values);
-    // reset();
-    // const { data } = await checkUser();
+    reset();
+    const { data } = await checkUser();
 
-    // if (data.status === "active_member") {
-    //   redirectToLoginPageWithToast({
-    //     title: ua.pages.register.checkForm.notifications.emailExists.title,
-    //     message: ua.pages.register.checkForm.notifications.emailExists.message,
-    //     push,
-    //   });
-    // }
+    if (data.status === "active_member") {
+      redirectToLoginPageWithToast({
+        title: ua.pages.register.checkForm.notifications.emailExists.title,
+        message: ua.pages.register.checkForm.notifications.emailExists.message,
+        push,
+      });
+    }
   };
 
   return (
@@ -176,10 +175,6 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 }
                 autoComplete="email"
                 register={register}
-                // onBlur={() => {
-                //   reset();
-                //   checkUser();
-                // }}
                 error={errors.email}
                 isLoading={isCheckingUserByEmail}
               />
@@ -234,34 +229,13 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                 </div>
               </div>
 
-              <div className="col-span-6 -mt-4">
+              <div className="col-span-6 -mt-4 sm:col-span-4">
                 <InfoBox
                   content={
-                    <>
-                      <p className="pb-2">
-                        Реєстрація доступна для осіб віком{" "}
-                        <strong>від 14 років</strong>,
-                      </p>
-                      <p className="pb-1">
-                        в залежності від віку розміри внесків:
-                      </p>
-                      <ul role="list" className="list-disc space-y-1 pl-5">
-                        <li>
-                          повний - 250 грн, особи від 16 до 64 років включно
-                        </li>
-                        <li>
-                          пільговий - 100 грн, особи від 14 до 15 років та від
-                          65 включно
-                        </li>
-                        <li>
-                          якщо в даному календарному році ваша категорія внеску
-                          змінюється, за цей рік ви сплачуєте відповідний внесок
-                          для нової категорії (наприклад, якщо у даному році вам
-                          виповнюється 16, значить внесок за цей рік буде
-                          повним)
-                        </li>
-                      </ul>
-                    </>
+                    <p>
+                      Реєстрація доступна для осіб віком{" "}
+                      <strong>від 14 років</strong>
+                    </p>
                   }
                   noMargin
                 />
@@ -386,6 +360,27 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
             </div>
           </div>
 
+          <InfoBox
+            content={
+              <>
+                <p className="pb-1">В залежності від віку розміри внесків:</p>
+                <ul role="list" className="list-disc space-y-1 pl-5">
+                  <li>повний - 250 грн, особи від 16 до 64 років включно</li>
+                  <li>
+                    пільговий - 100 грн, особи від 14 до 15 років та від 65
+                    включно
+                  </li>
+                  <li>
+                    якщо в даному календарному році ваша категорія внеску
+                    змінюється, за цей рік ви сплачуєте відповідний внесок для
+                    нової категорії (наприклад, якщо у даному році вам
+                    виповнюється 16, значить внесок за цей рік буде повним)
+                  </li>
+                </ul>
+              </>
+            }
+          />
+
           <div className="pb-6">
             <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-6">
               <div className="col-span-6 rounded-lg bg-gray-100 px-4 py-6 dark:border dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:p-8">
@@ -449,18 +444,40 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
                       {`${totalFeeAmount} ₴`}
                     </dd>
                   </div>
+                  <InfoBox
+                    darker
+                    content={
+                      <>
+                        <p>
+                          Дана сума сплачується під час вступу до федерації.
+                          Після вступу щорічний внесок буде складати:
+                        </p>
+                        <p>
+                          Членський внесок ФАіСУ ={" "}
+                          <strong>{membershipFeeAmount} грн</strong> + внесок до{" "}
+                          {selectedSubdivision?.name} ={" "}
+                          <strong>{selectedSubdivisionFeeAmount} грн</strong>,
+                          разом ={" "}
+                          <strong>
+                            {membershipFeeAmount + selectedSubdivisionFeeAmount}{" "}
+                            грн
+                          </strong>
+                        </p>
+                      </>
+                    }
+                  />
                 </dl>
 
                 <div className="mcfu-tooltip-container mt-6">
                   <Button type="submit" textSize="base" block>
                     {ua.pages.register.registrationForm.submit}
-                    {/* {isCheckingUserByEmail && (
+                    {isCheckingUserByEmail && (
                       <Spinner
                         className="absolute left-[50%] top-[50%] ml-[3.25rem] mt-[-11px]"
                         size={5}
                         darkColor="text-gray-200"
                       />
-                    )} */}
+                    )}
                   </Button>
                 </div>
               </div>

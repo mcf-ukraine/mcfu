@@ -5,13 +5,15 @@ import clsx from "clsx";
 type InfoBoxProps = {
   content: ReactNode;
   noMargin?: boolean;
+  darker?: boolean;
 };
 
-export const InfoBox = ({ content, noMargin }: InfoBoxProps) => (
+export const InfoBox = ({ content, noMargin, darker }: InfoBoxProps) => (
   <div
     className={clsx(
       !noMargin && "mt-4",
-      "rounded-md bg-blue-50 p-4 dark:bg-slate-700"
+      !darker ? "bg-blue-50" : "bg-blue-100/50",
+      "rounded-md p-4 dark:bg-slate-700"
     )}
   >
     <div className="flex">
