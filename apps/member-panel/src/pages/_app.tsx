@@ -69,7 +69,11 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
             ) : (
               <>
                 <SignedIn>
-                  <Component {...pageProps} />
+                  {pathname === "/verify-email" ? (
+                    <RedirectToHome />
+                  ) : (
+                    <Component {...pageProps} />
+                  )}
                 </SignedIn>
                 <SignedOut>
                   <RedirectToSignIn />
