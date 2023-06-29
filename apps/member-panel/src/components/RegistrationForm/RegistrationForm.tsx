@@ -13,11 +13,11 @@ import {
   setFocusOnFirstErrorField,
   years,
 } from "./form";
+import { redirectToLoginPageWithToast } from "./utils";
 import { ua } from "../../locales/ua";
 import { getMembershipFee, getRegistrationFee } from "../../utils/fees";
 import { capitalize } from "../../utils/helpers";
 import { api } from "../../utils/trpc";
-import { redirectToLoginPageWithToast } from "../CheckUserForm/utils";
 import { TextField } from "../TextField/TextField";
 
 const queryOpts = {

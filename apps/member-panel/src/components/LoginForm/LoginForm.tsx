@@ -4,24 +4,22 @@ import { type FormEvent, useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { type OAuthStrategy } from "@clerk/nextjs/dist/types/server";
 import { type SignInResource } from "@clerk/types/dist/signIn";
-import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import { log } from "next-axiom";
 import { z } from "zod";
 import { Button, InfoBox, Spinner, toast } from "@mcfu/ui";
 import { env } from "../../env.mjs";
 import { ua } from "../../locales/ua";
 import { isSignInError } from "../../utils/clerk";
+import { LoginAppleButton } from "../LoginAppleButton/LoginAppleButton";
 import { LoginFacebookButton } from "../LoginFacebookButton/LoginFacebookButton";
 import { LoginGoogleButton } from "../LoginGoogleButton/LoginGoogleButton";
+import { LoginTikTokButton } from "../LoginTikTokButton/LoginTikTokButton";
 
 const emailSchema = z.string().email();
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
-  const [expired, setExpired] = useState(false);
-  const [verified, setVerified] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [verifying, setVerifying] = useState(false);
   const router = useRouter();
   const { signIn, isLoaded, setActive } = useSignIn();
 
@@ -45,8 +43,6 @@ export const LoginForm = () => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setExpired(false);
-    setVerified(false);
 
     if (isLoaded) {
       setLoading(true);
@@ -59,7 +55,11 @@ export const LoginForm = () => {
       try {
         si = await signIn.create({ identifier: email });
         setLoading(false);
-        setVerifying(true);
+        toast.success({
+          title: ua.pages.login.form.notifications.emailSent.title,
+          message: ua.pages.login.form.notifications.emailSent.message,
+          duration: Infinity,
+        });
       } catch (e) {
         if (isSignInError(e)) {
           log.error(JSON.stringify(e.errors[0]));
@@ -82,7 +82,6 @@ export const LoginForm = () => {
           });
         }
         setLoading(false);
-        setVerifying(false);
         cancelMagicLinkFlow();
         return;
       }
@@ -101,9 +100,13 @@ export const LoginForm = () => {
       const verification = signIn.firstFactorVerification;
 
       if (verification.verifiedFromTheSameClient()) {
-        setVerified(true);
+        toast.success({
+          message: ua.pages.login.form.notifications.loginSuccess,
+        });
       } else if (verification.status === "expired") {
-        setExpired(true);
+        toast.error({
+          message: ua.pages.login.form.notifications.loginLinkExpired,
+        });
       }
 
       if (signIn.status === "complete") {
@@ -117,26 +120,39 @@ export const LoginForm = () => {
     <div className="relative mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div className="rounded-md bg-white px-4 pb-8 pt-6 shadow dark:bg-slate-800 sm:rounded-lg sm:px-10 md:pb-10 md:pt-8">
         <div>
+          <InfoBox content={ua.pages.login.form.content.socialLoginInfo} />
           <div>
-            <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <div>
+            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="sm:col-span-1">
                 <LoginGoogleButton
                   onClick={() => {
                     signInWith("oauth_google");
                   }}
                 />
               </div>
-              <div>
+              <div className="sm:col-span-1">
                 <LoginFacebookButton
                   onClick={() => {
                     signInWith("oauth_facebook");
                   }}
                 />
               </div>
+              <div className="sm:col-span-1">
+                <LoginAppleButton
+                  onClick={() => {
+                    signInWith("oauth_apple");
+                  }}
+                />
+              </div>
+              <div className="sm:col-span-1">
+                <LoginTikTokButton
+                  onClick={() => {
+                    signInWith("oauth_tiktok");
+                  }}
+                />
+              </div>
             </div>
           </div>
-
-          <InfoBox content={ua.pages.login.form.content.socialLoginInfo} />
 
           <div className="relative mt-6">
             <div
@@ -152,7 +168,7 @@ export const LoginForm = () => {
             </div>
           </div>
         </div>
-        <form className="mt-4 space-y-6" onSubmit={onSubmit}>
+        <form className="mt-4 space-y-5" onSubmit={onSubmit}>
           <div>
             <label
               htmlFor="email"
@@ -170,12 +186,9 @@ export const LoginForm = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 onInvalid={handleInvalid}
-                className="text-md block w-full rounded-md border-0 border-gray-300 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:ring-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:leading-6"
+                className="mb-3 block w-full rounded-md border-0 border-gray-300 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:ring-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:leading-6"
               />
             </div>
-          </div>
-
-          <div>
             <Button type="submit" block textSize="base">
               {ua.pages.login.form.submit}
               {loading && (
@@ -188,39 +201,18 @@ export const LoginForm = () => {
             </Button>
           </div>
 
-          {verifying && (
-            <div className="rounded-md bg-blue-50 p-4 dark:bg-sky-900">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <InformationCircleIcon
-                    className="h-5 w-5 text-blue-400 dark:text-sky-500"
-                    aria-hidden="true"
-                  />
-                </div>
-                <div className="ml-3 flex-1 md:flex md:justify-between">
-                  <p className="text-sm text-sky-700 dark:text-gray-100">
-                    {verified
-                      ? ua.pages.login.form.notifications.loginSuccess
-                      : ua.pages.login.form.notifications.emailSent}
-                    {expired &&
-                      ua.pages.login.form.notifications.loginLinkExpired}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
+          <div>
+            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+              {ua.pages.login.form.register.title}
+            </p>
+            <Button block textSize="base" variant="secondary">
+              <Link href={"/register"} className="block">
+                {ua.pages.login.form.register.link}
+              </Link>
+            </Button>
+          </div>
         </form>
       </div>
-
-      <p className="mt-5 text-center text-sm text-gray-500 dark:text-gray-400">
-        {ua.pages.login.form.register.title}{" "}
-        <Link
-          href={"/register"}
-          className="font-semibold leading-6 text-sky-600 hover:text-sky-500 dark:text-sky-400 dark:hover:text-sky-300"
-        >
-          {ua.pages.login.form.register.link}
-        </Link>
-      </p>
     </div>
   );
 };

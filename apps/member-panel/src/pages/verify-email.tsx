@@ -6,9 +6,6 @@ import { MagicLinkErrorCode, isMagicLinkError, useClerk } from "@clerk/nextjs";
 import { Spinner } from "@mcfu/ui";
 import { env } from "../env.mjs";
 import { ua } from "../locales/ua";
-import { withHomeRedirect } from "../utils/withHomeRedirect";
-
-export const getServerSideProps = withHomeRedirect;
 
 const VerifyEmail = () => {
   const [verificationStatus, setVerificationStatus] = useState("loading");
