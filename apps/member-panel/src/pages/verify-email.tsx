@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MagicLinkErrorCode, isMagicLinkError, useClerk } from "@clerk/nextjs";
 import { Spinner } from "@mcfu/ui";
+import { RedirectToHome } from "../components";
 import { env } from "../env.mjs";
 import { ua } from "../locales/ua";
 
@@ -79,8 +80,12 @@ const VerifyEmail = () => {
                 </p>
               </>
             )}
-            {verificationStatus === "verified" &&
-              ua.pages.verifyEmail.content.verificationSuccess}
+            {verificationStatus === "verified" && (
+              <>
+                {ua.pages.verifyEmail.content.verificationSuccess}
+                <RedirectToHome />
+              </>
+            )}
           </div>
         )}
       </div>
