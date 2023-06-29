@@ -11,6 +11,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@mcfu/ui";
+import { RedirectToHome } from "../components";
 import { publicRoutes } from "../constants/publicRoutes";
 import { api } from "../utils/trpc";
 import "../styles/styles.css";
@@ -53,7 +54,18 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
         <ThemeProvider attribute="class" enableSystem>
           <main className={`${inter.variable} font-sans`}>
             {isPublicPage ? (
-              <Component {...pageProps} />
+              <>
+                <SignedIn>
+                  {pathname === "/login" || pathname === "/register" ? (
+                    <RedirectToHome />
+                  ) : (
+                    <Component {...pageProps} />
+                  )}
+                </SignedIn>
+                <SignedOut>
+                  <Component {...pageProps} />
+                </SignedOut>
+              </>
             ) : (
               <>
                 <SignedIn>
