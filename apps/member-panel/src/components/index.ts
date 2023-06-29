@@ -8,3 +8,4 @@ export * from "./Layout/Layout";
 export * from "./LogoAndTitle/LogoAndTitle";
 export * from "./RegistrationForm/RegistrationForm";
 export * from "./TextField/TextField";
+export * from "./RedirectToHome/RedirectToHome";

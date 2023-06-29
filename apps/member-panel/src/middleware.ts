@@ -10,16 +10,6 @@ export default authMiddleware({
 
       return NextResponse.redirect(signInUrl);
     }
-
-    if (
-      auth.userId &&
-      (request.nextUrl.pathname === "/login" ||
-        request.nextUrl.pathname === "/register")
-    ) {
-      const homeUrl = new URL("/", request.url);
-
-      return NextResponse.redirect(homeUrl);
-    }
   },
 
   publicRoutes,
