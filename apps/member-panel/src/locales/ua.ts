@@ -20,8 +20,10 @@ export const ua = {
 
       form: {
         title: "Кабінет ФАіСУ",
-        loginWithFacebook: "Увійти з Facebook",
         loginWithGoogle: "Увійти з Google",
+        loginWithFacebook: "Увійти з Facebook",
+        loginWithApple: "Увійти з Apple",
+        loginWithTikTok: "Увійти з TikTok",
         submit: "Увійти",
 
         content: {
@@ -37,7 +39,7 @@ export const ua = {
             errors: {
               invalid: {
                 title: "Помилка",
-                message: "Неправильний формат email",
+                message: "Введіть коректний email",
               },
             },
           },
@@ -49,11 +51,14 @@ export const ua = {
         },
 
         notifications: {
-          emailSent:
-            "Будь-ласка перевірте електронну пошту, ми надіслали вам посилання для входу.",
+          emailSent: {
+            title: "Посилання для входу надіслано",
+            message:
+              "Будь-ласка перевірте електронну пошту, ми надіслали вам посилання для входу",
+          },
           loginSuccess: "Дякуємо, Ви успішно увійшли до кабінету ФАіСУ!",
           loginLinkExpired:
-            "Посилання для входу застаріло, будь-ласка, спробуйте ще раз.",
+            "Посилання для входу застаріло, будь-ласка, спробуйте ще раз",
         },
 
         errors: {

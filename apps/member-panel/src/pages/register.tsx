@@ -7,7 +7,6 @@ import { appRouter } from "@mcfu/trpc-server";
 import { toast } from "@mcfu/ui";
 import { LogoAndTitle, RegistrationForm } from "../components";
 import { ua } from "../locales/ua";
-import { useHomeRedirect } from "../utils/clerk";
 
 export const getStaticProps = async () => {
   const helpers = createServerSideHelpers({
@@ -30,7 +29,6 @@ export const getStaticProps = async () => {
 
 const Register = () => {
   const { query } = useRouter();
-  useHomeRedirect();
 
   useEffect(() => {
     toast.dismiss();
