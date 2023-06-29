@@ -56,7 +56,9 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
             {isPublicPage ? (
               <>
                 <SignedIn>
-                  {pathname === "/login" || pathname === "/register" ? (
+                  {pathname === "/login" ||
+                  pathname === "/register" ||
+                  pathname === "/verify-email" ? (
                     <RedirectToHome />
                   ) : (
                     <Component {...pageProps} />
