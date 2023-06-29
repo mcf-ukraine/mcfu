@@ -1,4 +1,3 @@
-export * from "./CheckUserForm/CheckUserForm";
 export * from "./Home/HomePageContent";
 export * from "./LoginFacebookButton/LoginFacebookButton";
 export * from "./LoginGoogleButton/LoginGoogleButton";
