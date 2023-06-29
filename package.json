@@ -7,7 +7,7 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "postinstall": "npx prisma generate"
+    "postinstall": "npx prisma generate --data-proxy"
   },
   "private": true,
   "prisma": {
