@@ -1,9 +1,6 @@
-import matchers from "@testing-library/jest-dom/matchers";
+import "vitest-dom/extend-expect";
 import { cleanup } from "@testing-library/react";
-import { expect, afterEach, vi } from "vitest";
-
-// extends Vitest's expect method with methods from react-testing-library
-expect.extend(matchers);
+import { afterEach, vi } from "vitest";
 
 vi.mock("next/router", () => require("next-router-mock"));
 

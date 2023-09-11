@@ -5,6 +5,7 @@ const config: StorybookConfig = {
   core: {},
   stories: ["../src/lib/**/*.mdx", "../src/lib/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: ["@storybook/addon-essentials", "@storybook/addon-styling"],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async viteFinal(config: any) {
     return mergeConfig(config, {});
   },
