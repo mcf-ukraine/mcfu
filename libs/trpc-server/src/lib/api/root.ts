@@ -1,4 +1,5 @@
 import { activityTypeRouter } from "./routers/activityType";
+import { paymentRouter } from "./routers/payment";
 import { subdivisionRouter } from "./routers/subdivision";
 import { userRouter } from "./routers/user";
 import { createTRPCRouter } from "./trpc";
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   subdivision: subdivisionRouter,
   activityType: activityTypeRouter,
+  payment: paymentRouter,
 });
 
 // export type definition of API

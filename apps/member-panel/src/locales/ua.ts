@@ -212,6 +212,27 @@ export const ua = {
           total: "Сума до сплати",
         },
 
+        notifications: {
+          checkingUserExistence: {
+            title: "Перевірка імені",
+            message:
+              "Будь-ласка, зачекайте, ми перевіряємо чи ви вже зареєстровані в системі...",
+          },
+          creatingPaymentLink: {
+            title: "Створення посилання для оплати",
+            message:
+              "Будь-ласка, зачекайте, ми створюємо посилання для оплати...",
+          },
+          createdPaymentLink: {
+            title: "Посилання для оплати створено",
+          },
+          redirectingToPaymentPage: {
+            title: "Перенаправлення",
+            message:
+              "Будь-ласка, зачекайте, вас буде перенаправлено на сторінку оплати...",
+          },
+        },
+
         submit: "Сплатити",
         submitDisabledTooltip: "Будь-ласка, заповніть усі необхідні поля",
       },

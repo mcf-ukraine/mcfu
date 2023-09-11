@@ -3,4 +3,5 @@ export const publicRoutes = [
   "/register",
   "/api/trpc/user.check",
   "/api/trpc/subdivision.getAll,activityType.getAll",
+  "/api/trpc/payment.create",
 ];

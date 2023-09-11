@@ -105,3 +105,28 @@ export const showToastAndRedirect = ({
       break;
   }
 };
+
+export const redirectToPaymentPageWithToast = ({
+  formUrl,
+  push,
+}: {
+  formUrl: string;
+  push: NextRouter["push"];
+}) => {
+  setTimeout(() => {
+    toast.loading({
+      title:
+        ua.pages.register.registrationForm.notifications
+          .redirectingToPaymentPage.title,
+      message:
+        ua.pages.register.registrationForm.notifications
+          .redirectingToPaymentPage.message,
+      duration: Infinity,
+    });
+  }, 500);
+
+  setTimeout(() => {
+    push(formUrl);
+    toast.dismiss();
+  }, 3000);
+};

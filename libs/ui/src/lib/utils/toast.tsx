@@ -10,9 +10,9 @@ type ToastParams = {
 };
 
 type Toast = {
-  success: (params: ToastParams) => void;
-  error: (params: ToastParams) => void;
-  loading: (params: ToastParams) => void;
+  success: (params: ToastParams) => string;
+  error: (params: ToastParams) => string;
+  loading: (params: ToastParams) => string;
   dismiss: (toastId?: string) => void;
 };
 
