@@ -17,6 +17,7 @@ vi.mock("@clerk/nextjs", () => ({
   }),
 }));
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const userMock = {
   id: 1,
   clerkId: "cku0q2q6h0000g1tq2q6h0g1t",
