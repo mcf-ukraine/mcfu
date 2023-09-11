@@ -1,5 +1,5 @@
+import { getAllActivityTypes } from "../services";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { getAllActivityTypes } from "../utils";
 
 export const activityTypeRouter = createTRPCRouter({
   getAll: publicProcedure.query(async () => {

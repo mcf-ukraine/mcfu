@@ -1,6 +1,6 @@
 import { z } from "zod";
+import { checkUser, getUser } from "../services";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { checkUser, getUser } from "../utils";
 
 export const userRouter = createTRPCRouter({
   hello: publicProcedure

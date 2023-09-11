@@ -62,6 +62,9 @@ model Fee {
   paymentDate            DateTime?
   createdAt              DateTime             @default(now())
   updatedAt              DateTime             @updatedAt
+  transactionId          String?
+  type                   FeeType              @default(MEMBERSHIP)
+  fareType               FeeFareType          @default(FULL)
   amount                 Int
   user                   User                 @relation(fields: [userId], references: [id])
   userId                 Int
@@ -75,6 +78,17 @@ enum AccountType {
 }
 
 enum MembershipType {
+  FULL
+  REDUCED
+}
+
+enum FeeType {
+  REGISTRATION
+  MEMBERSHIP
+  SUBDIVISION
+}
+
+enum FeeFareType {
   FULL
   REDUCED
 }

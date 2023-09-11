@@ -3,7 +3,7 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { Button, InfoBox, Spinner } from "@mcfu/ui";
+import { Button, InfoBox, Spinner, toast } from "@mcfu/ui";
 import { FeeTitle } from "./FeeTitle";
 import {
   type RegistrationFormInputs,
@@ -13,8 +13,13 @@ import {
   setFocusOnFirstErrorField,
   years,
 } from "./form";
-import { redirectToLoginPageWithToast } from "./utils";
+import {
+  redirectToLoginPageWithToast,
+  redirectToPaymentPageWithToast,
+} from "./utils";
+import { env } from "../../env.mjs";
 import { ua } from "../../locales/ua";
+import { uniqueId } from "../../utils/cuid";
 import { getMembershipFee, getRegistrationFee } from "../../utils/fees";
 import { capitalize } from "../../utils/helpers";
 import { api } from "../../utils/trpc";
@@ -44,6 +49,9 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
     resolver: zodResolver(registrationFormSchema),
     shouldFocusError: false,
   });
+
+  // Create payment
+  const { mutateAsync: createPayment } = api.payment.create.useMutation();
 
   // Check email
   const {
@@ -84,9 +92,20 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
   const totalFeeAmount =
     registrationFeeAmount + membershipFeeAmount + selectedSubdivisionFeeAmount;
 
+  // Submit
   const onSubmit: SubmitHandler<RegistrationFormInputs> = async (values) => {
     console.log(values);
     reset();
+
+    const existenceId = toast.loading({
+      title:
+        ua.pages.register.registrationForm.notifications.checkingUserExistence
+          .title,
+      message:
+        ua.pages.register.registrationForm.notifications.checkingUserExistence
+          .message,
+    });
+
     const { data } = await checkUser();
 
     if (data.status === "active_member") {
@@ -95,6 +114,35 @@ export const RegistrationForm = ({ defaultValues }: RegistrationFormProps) => {
         message: ua.pages.register.checkForm.notifications.emailExists.message,
         push,
       });
+    }
+
+    if (data.status === "not_member") {
+      toast.dismiss(existenceId);
+      toast.loading({
+        title:
+          ua.pages.register.registrationForm.notifications.creatingPaymentLink
+            .title,
+        message:
+          ua.pages.register.registrationForm.notifications.creatingPaymentLink
+            .message,
+      });
+
+      const payment = await createPayment({
+        orderNumber: uniqueId(),
+        description: `Вступ до ФАіСУ | ${values.firstName} ${values.lastName} ${values.middleName}, вступ: ${registrationFeeAmount}, членський: ${membershipFeeAmount}, ВП: ${selectedSubdivisionFeeAmount}`,
+        amount: totalFeeAmount,
+        returnUrl: env.NEXT_PUBLIC_SITE_URL,
+      });
+
+      toast.success({
+        title:
+          ua.pages.register.registrationForm.notifications.createdPaymentLink
+            .title,
+      });
+
+      if (payment.formUrl) {
+        redirectToPaymentPageWithToast({ formUrl: payment.formUrl, push });
+      }
     }
   };
 
