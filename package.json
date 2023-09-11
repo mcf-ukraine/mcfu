@@ -121,6 +121,7 @@
     "vite-plugin-eslint": "1.8.1",
     "vite-tsconfig-paths": "4.2.1",
     "vitest": "0.34.4",
+    "vitest-dom": "0.1.0",
     "whatwg-fetch": "3.6.19"
   },
   "overrides": {
